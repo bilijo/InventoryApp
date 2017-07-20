@@ -14,14 +14,16 @@ public class ProductProvider  extends ContentProvider {
     /** Tag for the log messages */
     public static final String LOG_TAG = ProductProvider.class.getSimpleName();
 
+    /** Database helper object */
+    private ProductDbHelper mDbHelper;
+
     /**
      * Initialize the provider and the database helper object.
      */
     @Override
     public boolean onCreate() {
-        // TODO: Create and initialize a productDbHelper object to gain access to the products database.
-        // Make sure the variable is a global variable, so it can be referenced from other
-        // ContentProvider methods.
+        // Create and initialize a productDbHelper object to gain access to the products database.
+        mDbHelper = new ProductDbHelper(getContext());
         return true;
     }
 
