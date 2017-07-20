@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">InventoryApp</string>
+    <string name="main_prod_name">"name"</string>
+    <string name="main_prod_qty">"quantity"</string>
+    <string name="main_prod_price">"price"</string>
+</resources>
