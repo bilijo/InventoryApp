@@ -3,6 +3,7 @@ package com.example.android.inventoryapp;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -25,11 +26,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         // To access our database, we instantiate our subclass of SQLiteOpenHelper
         // and pass the context, which is the current activity.
         mDbHelper = new ProductDbHelper(this);
-
         insertProduct();
         displayDatabaseInfo();
     }
@@ -39,9 +38,9 @@ public class MainActivity extends AppCompatActivity {
      * the products database.
      */
     private void displayDatabaseInfo() {
+        //DatabaseUtils.dumpCursor(cursor);
         // Create and/or open a database to read from it
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
-
 
     }
 
@@ -63,8 +62,5 @@ public class MainActivity extends AppCompatActivity {
         long newRowId = db.insert(ProductEntry.TABLE_NAME, null, values);
     }
 
-
-
-    
     
 }
