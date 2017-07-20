@@ -7,7 +7,32 @@
     android:orientation="vertical"
     tools:context="com.example.android.inventoryapp.MainActivity">
 
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    >
+    <TextView
+        android:id="@+id/header_product_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="16dp"
+        android:text="@string/text_product_prod_name"/>
+    <TextView
+        android:id="@+id/header_product_qty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="16dp"
+        android:text="@string/text_product_prod_qty"/>
+    <TextView
+        android:id="@+id/header_product_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_product_prod_price"/>
+</LinearLayout>
+
     <ListView
+        android:id="@+id/list_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 

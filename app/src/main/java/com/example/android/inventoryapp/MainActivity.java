@@ -1,7 +1,10 @@
 package com.example.android.inventoryapp;
 
+import android.app.LoaderManager;
 import android.content.ContentValues;
+import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.Loader;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
@@ -10,12 +13,22 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.android.inventoryapp.data.ProductDbHelper;
 import com.example.android.inventoryapp.data.ProductContract.ProductEntry;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements
+        LoaderManager.LoaderCallbacks<Cursor>{
+
+
+
+        /** Identifier for the pet data loader */
+        private static final int PRODUCT_LOADER = 0;
+
+        /** Adapter for the ListView */
+        ProductCursorAdapter mCursorAdapter;
 
 
     /** Database helper that will provide us access to the database */
@@ -29,6 +42,22 @@ public class MainActivity extends AppCompatActivity {
         // To access our database, we instantiate our subclass of SQLiteOpenHelper
         // and pass the context, which is the current activity.
         mDbHelper = new ProductDbHelper(this);
+
+         // Find the ListView which will be populated with the pet data
+        ListView petListView = (ListView) findViewById(R.id.list_item);
+
+        // Find and set empty view on the ListView, so that it only shows when the list has 0 items.
+        View emptyView = findViewById(R.id.text_empty_list);
+        petListView.setEmptyView(emptyView);
+
+        // Setup an Adapter to create a list item for each row of pet data in the Cursor.
+        // There is no pet data yet (until the loader finishes) so pass in null for the Cursor.
+        mCursorAdapter = new ProductCursorAdapter(this, null);
+        petListView.setAdapter(mCursorAdapter);
+
+        // Kick off the loader
+        getLoaderManager().initLoader(PRODUCT_LOADER, null, this);
+
         insertProduct();
         displayDatabaseInfo();
     }
@@ -62,5 +91,34 @@ public class MainActivity extends AppCompatActivity {
         long newRowId = db.insert(ProductEntry.TABLE_NAME, null, values);
     }
 
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+        // Define a projection that specifies the columns from the table we care about.
+        String[] projection = {
+                ProductEntry._ID,
+                ProductEntry.COLUMN_PRODUCT_NAME,
+                ProductEntry.COLUMN_PRODUCT_PRICE };
+
+        // This loader will execute the ContentProvider's query method on a background thread
+        return new CursorLoader(this,   // Parent activity context
+                ProductEntry.CONTENT_URI,   // Provider content URI to query
+                projection,             // Columns to include in the resulting Cursor
+                null,                   // No selection clause
+                null,                   // No selection arguments
+                null);                  // Default sort order
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        // Update {@link ProductCursorAdapter} with this new cursor containing updated pet data
+        mCursorAdapter.swapCursor(data);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        // Callback called when the data needs to be deleted
+        mCursorAdapter.swapCursor(null);
+    }
     
 }

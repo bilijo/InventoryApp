@@ -3,4 +3,7 @@
     <string name="text_product_prod_name">"name"</string>
     <string name="text_product_prod_qty">"quantity"</string>
     <string name="text_product_prod_price">"price"</string>
+
+    <!-- Label for the pet's breed if the breed is unknown [CHAR LIMIT=20] -->
+    <string name="unknown_price">Unknown price</string>
 </resources>
