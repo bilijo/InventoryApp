@@ -12,18 +12,26 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android.inventoryapp.data.ProductDbHelper;
 import com.example.android.inventoryapp.data.ProductContract.ProductEntry;
+import com.example.android.inventoryapp.data.ProductProvider;
+
+import static android.R.attr.duration;
 
 public class MainActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>{
+
+    public static final String LOG_TAG = MainActivity.class.getSimpleName();
 
         /** Identifier for the product data loader */
         private static final int PRODUCT_LOADER = 0;
@@ -39,6 +47,16 @@ public class MainActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Button orderButton = (Button) findViewById(R.id.btn_order_product);
+        orderButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                  Intent intent = new Intent(MainActivity.this, ProductActivity.class);
+                startActivity(intent);
+            }
+        });
+
 
         // To access our database, we instantiate our subclass of SQLiteOpenHelper
         // and pass the context, which is the current activity.
@@ -61,6 +79,10 @@ public class MainActivity extends AppCompatActivity implements
         productListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+
+                Log.d(LOG_TAG, "onItemClick: ****************" );
+                Toast.makeText(MainActivity.this, "onItemClick: ", Toast.LENGTH_SHORT).show();
+
                 // Create new intent to go to {@link EditorActivity}
                 Intent intent = new Intent(MainActivity.this, ProductActivity.class);
 
@@ -73,6 +95,8 @@ public class MainActivity extends AppCompatActivity implements
                 // Set the URI on the data field of the intent
                 intent.setData(currentProductUri);
 
+                Log.d(LOG_TAG, "onItemClick: " + currentProductUri);
+
                 // Launch the {@link EditorActivity} to display the data for the current product.
                 startActivity(intent);
             }
@@ -84,10 +108,12 @@ public class MainActivity extends AppCompatActivity implements
 
     }
 
+
+
     @Override
     protected void onStart() {
         super.onStart();
-        insertProduct();
+        //insertProduct();
         displayDatabaseInfo();
     }
 

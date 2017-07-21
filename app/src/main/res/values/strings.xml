@@ -7,7 +7,7 @@
     <!-- Label for overview category of attributes in the editor [CHAR LIMIT=30] -->
     <string name="category_overview">Overview</string>
 
-    <!-- Label for the product's breed if the price is unknown [CHAR LIMIT=20] -->
+    <!-- Label for the product's qty if the price is unknown [CHAR LIMIT=20] -->
     <string name="unknown_price">Unknown price</string>
 
     <!-- Title text for the empty view -->
@@ -17,10 +17,10 @@
 
     <!-- Text hint for name field in the editor [CHAR LIMIT=30] -->
     <string name="hint_product_name">Name</string>
-    <!-- Text hint for breed field in the editor [CHAR LIMIT=30] -->
-    <string name="hint_product_breed">Breed</string>
+    <!-- Text hint for qty field in the editor [CHAR LIMIT=30] -->
+    <string name="hint_product_qty">Quantity</string>
     <!-- Text hint for name field in the editor [CHAR LIMIT=30] -->
-    <string name="hint_product_weight">Weight</string>
+    <string name="hint_product_price">Price</string>
     
     <!-- Title for the activity to add a new product [CHAR LIMIT=20] -->
     <string name="product_activity_title_new_product">Add a Product</string>

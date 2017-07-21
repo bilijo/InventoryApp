@@ -34,14 +34,14 @@
             <!-- Breed field -->
             <EditText
                 android:id="@+id/edit_product_qty"
-                android:hint="@string/hint_product_breed"
+                android:hint="@string/hint_product_qty"
                 android:inputType="textCapWords"
                 style="@style/EditorFieldStyle" />
 
             <!-- Weight field -->
             <EditText
                 android:id="@+id/edit_product_price"
-                android:hint="@string/hint_product_weight"
+                android:hint="@string/hint_product_price"
                 android:inputType="number"
                 style="@style/EditorFieldStyle" />
 
