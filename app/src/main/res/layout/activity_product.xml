@@ -2,25 +2,34 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_margin="@dimen/main_margin">
 
 
-    <!-- Overview category -->
+    <!-- Overview Product -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <!-- Label -->
-        <TextView
-            android:text="@string/category_overview"
-            style="@style/CategoryStyle" />
+
+
+            <!-- Label -->
+            <TextView
+                android:text="@string/product_order"
+                style="@style/CategoryStyle" />
+
+
+
+
+
+
 
         <!-- Input fields -->
         <LinearLayout
             android:layout_height="wrap_content"
-            android:layout_width="0dp"
-            android:layout_weight="2"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
             android:paddingLeft="4dp"
             android:orientation="vertical">
 
@@ -31,14 +40,14 @@
                 android:inputType="textCapWords"
                 style="@style/EditorFieldStyle" />
 
-            <!-- Breed field -->
+            <!-- Quantity field -->
             <EditText
                 android:id="@+id/edit_product_qty"
                 android:hint="@string/hint_product_qty"
-                android:inputType="textCapWords"
+                android:inputType="number"
                 style="@style/EditorFieldStyle" />
 
-            <!-- Weight field -->
+            <!-- Price field -->
             <EditText
                 android:id="@+id/edit_product_price"
                 android:hint="@string/hint_product_price"
@@ -48,11 +57,40 @@
         </LinearLayout>
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/detail_product_name"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginRight="26dp"
-        android:text="@string/text_product_prod_name"/>
+        android:orientation="horizontal"
+        android:layout_marginBottom="@dimen/main_margin"
+        android:layout_marginTop="@dimen/main_margin">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Qty plus"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Qty minus"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Supplier"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Delele product"/>
+
+    </LinearLayout>
 
 </LinearLayout>

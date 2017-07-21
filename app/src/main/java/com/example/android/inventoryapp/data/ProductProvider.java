@@ -5,6 +5,7 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -65,6 +66,7 @@ public class ProductProvider  extends ContentProvider {
     @Override
     public Cursor query(@NonNull Uri uri, String[] projection, String selection, String[] selectionArgs,
                         String sortOrder) {
+
         // Get readable database
         SQLiteDatabase database = mDbHelper.getReadableDatabase();
 
@@ -106,7 +108,7 @@ public class ProductProvider  extends ContentProvider {
         // so we know what content URI the Cursor was created for.
         // If the data at this URI changes, then we know we need to update the Cursor.
         cursor.setNotificationUri(getContext().getContentResolver(), uri);
-
+        DatabaseUtils.dumpCursor(cursor);
         // Return the cursor
         return cursor;
     }

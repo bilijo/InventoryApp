@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements
      * the products database.
      */
     private void displayDatabaseInfo() {
-        //DatabaseUtils.dumpCursor(cursor);
+
         // Create and/or open a database to read from it
        // SQLiteDatabase db = mDbHelper.getReadableDatabase();
 
@@ -146,9 +146,9 @@ public class MainActivity extends AppCompatActivity implements
         //long newUri = getContentResolver().insert(ProductEntry.CONTENT_URI, null, values);
     }
 
-
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+
         // Define a projection that specifies the columns from the table we care about.
         String[] projection = {
                 ProductEntry._ID,

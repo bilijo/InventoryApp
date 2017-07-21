@@ -4,8 +4,8 @@
     <string name="text_product_prod_qty">"Quantity"</string>
     <string name="text_product_prod_price">"Price"</string>
 
-    <!-- Label for overview category of attributes in the editor [CHAR LIMIT=30] -->
-    <string name="category_overview">Overview</string>
+    <!-- Label for overview category of attributes in the product editor [CHAR LIMIT=30] -->
+    <string name="product_order">Order Product</string>
 
     <!-- Label for the product's qty if the price is unknown [CHAR LIMIT=20] -->
     <string name="unknown_price">Unknown price</string>
