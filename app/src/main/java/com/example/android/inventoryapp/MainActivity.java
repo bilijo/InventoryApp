@@ -25,7 +25,7 @@ import com.example.android.inventoryapp.data.ProductContract.ProductEntry;
 public class MainActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>{
 
-        /** Identifier for the pet data loader */
+        /** Identifier for the product data loader */
         private static final int PRODUCT_LOADER = 0;
 
         /** Adapter for the ListView */
@@ -44,21 +44,21 @@ public class MainActivity extends AppCompatActivity implements
         // and pass the context, which is the current activity.
         mDbHelper = new ProductDbHelper(this);
 
-         // Find the ListView which will be populated with the pet data
-        ListView petListView = (ListView) findViewById(R.id.list_item);
+         // Find the ListView which will be populated with the product data
+        ListView productListView = (ListView) findViewById(R.id.list_item);
 
         // Find and set empty view on the ListView, so that it only shows when the list has 0 items.
         View emptyView = findViewById(R.id.text_empty_list);
-        petListView.setEmptyView(emptyView);
+        productListView.setEmptyView(emptyView);
 
-        // Setup an Adapter to create a list item for each row of pet data in the Cursor.
-        // There is no pet data yet (until the loader finishes) so pass in null for the Cursor.
+        // Setup an Adapter to create a list item for each row of product data in the Cursor.
+        // There is no product data yet (until the loader finishes) so pass in null for the Cursor.
         mCursorAdapter = new ProductCursorAdapter(this, null);
-        petListView.setAdapter(mCursorAdapter);
+        productListView.setAdapter(mCursorAdapter);
 
 
         // Setup the item click listener
-        petListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        productListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 // Create new intent to go to {@link EditorActivity}
@@ -68,12 +68,12 @@ public class MainActivity extends AppCompatActivity implements
                 // by appending the "id" (passed as input to this method) onto the
                 // {@link ProductEntry#CONTENT_URI}.
 
-                Uri currentPetUri = ContentUris.withAppendedId(ProductEntry.CONTENT_URI, id);
+                Uri currentProductUri = ContentUris.withAppendedId(ProductEntry.CONTENT_URI, id);
 
                 // Set the URI on the data field of the intent
-                intent.setData(currentPetUri);
+                intent.setData(currentProductUri);
 
-                // Launch the {@link EditorActivity} to display the data for the current pet.
+                // Launch the {@link EditorActivity} to display the data for the current product.
                 startActivity(intent);
             }
         });
@@ -141,7 +141,7 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        // Update {@link ProductCursorAdapter} with this new cursor containing updated pet data
+        // Update {@link ProductCursorAdapter} with this new cursor containing updated product data
         mCursorAdapter.swapCursor(data);
     }
 
