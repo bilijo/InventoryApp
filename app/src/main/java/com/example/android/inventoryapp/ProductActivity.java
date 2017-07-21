@@ -233,9 +233,8 @@ public class ProductActivity extends AppCompatActivity implements
 
             // Update the views on the screen with the values from the database
             mNameEditText.setText(name);
-            mQtyEditText.setText(qty);
-            mPriceEditText.setText(price);
-
+            mQtyEditText.setText(String.valueOf(qty));
+            mPriceEditText.setText(String.valueOf(price));
 
         }
     }
