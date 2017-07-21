@@ -15,13 +15,13 @@
         android:id="@+id/header_product_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="16dp"
+        android:layout_marginRight="26dp"
         android:text="@string/text_product_prod_name"/>
     <TextView
         android:id="@+id/header_product_qty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="16dp"
+        android:layout_marginRight="26dp"
         android:text="@string/text_product_prod_qty"/>
     <TextView
         android:id="@+id/header_product_price"
@@ -44,6 +44,8 @@
         android:layout_height="wrap_content"
         android:text="Database is empty , please populate it with some items"
         android:visibility="visible"/>
+
+
 
     <!-- Button to contact the supplier -->
     <Button

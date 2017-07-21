@@ -70,7 +70,7 @@ public class ProductContract {
          *
          * Type: TEXT
          */
-        public final static String COLUMN_PRODUCT_NAME ="name";
+        public final static String COLUMN_PRODUCT_NAME ="Name";
 
         /**
          * Quantity of the product.

@@ -73,14 +73,17 @@ public class ProductCursorAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
         // Find individual views that we want to modify in the list item layout
         TextView nameTextView = (TextView) view.findViewById(R.id.text_product_name);
-        TextView summaryTextView = (TextView) view.findViewById(R.id.text_product_price);
+        TextView qtyTextView = (TextView) view.findViewById(R.id.text_product_quantity);
+        TextView priceTextView = (TextView) view.findViewById(R.id.text_product_price);
 
         // Find the columns of product attributes that we're interested in
         int nameColumnIndex = cursor.getColumnIndex(ProductEntry.COLUMN_PRODUCT_NAME);
+        int qtyColumnIndex = cursor.getColumnIndex(ProductEntry.COLUMN_PRODUCT_QTY);
         int priceColumnIndex = cursor.getColumnIndex(ProductEntry.COLUMN_PRODUCT_PRICE);
 
         // Read the product attributes from the Cursor for the current product
         String productName = cursor.getString(nameColumnIndex);
+        String productQty = cursor.getString(qtyColumnIndex);
         String productPrice = cursor.getString(priceColumnIndex);
 
         // If the product price is empty string or null, then use some default text
@@ -89,8 +92,10 @@ public class ProductCursorAdapter extends CursorAdapter {
             productPrice = context.getString(R.string.unknown_price);
         }
 
+
         // Update the TextViews with the attributes for the current product
         nameTextView.setText(productName);
-        summaryTextView.setText(productPrice);
+        priceTextView.setText(productPrice);
+        qtyTextView.setText(productQty);
     }
 }
