@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Setup the order button click listener
         Button orderButton = (Button) findViewById(R.id.btn_order_product);
         orderButton.setOnClickListener(new View.OnClickListener() {
             @Override

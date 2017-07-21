@@ -10,6 +10,18 @@
     <!-- Label for the product's qty if the price is unknown [CHAR LIMIT=20] -->
     <string name="unknown_price">Unknown price</string>
 
+
+    <!-- Toast message in editor when new pet has been successfully inserted [CHAR LIMIT=NONE] -->
+    <string name="editor_insert_product_successful">Pet saved</string>
+    <!-- Toast message in editor when new pet has failed to be inserted [CHAR LIMIT=NONE] -->
+    <string name="editor_insert_product_failed">Error with saving product</string>
+
+    <!-- Toast message in editor when current pet was successfully updated [CHAR LIMIT=NONE] -->
+    <string name="editor_update_product_successful">Pet updated</string>
+    <!-- Toast message in editor when current pet has failed to be updated [CHAR LIMIT=NONE] -->
+    <string name="editor_update_product_failed">Error with updating product</string>
+
+
     <!-- Title text for the empty view -->
     <string name="empty_view_title_text">No man\'s land here </string>
     <!-- Subtitle text for the empty view that prompts the user to add a product [CHAR LIMIT=50] -->

@@ -65,11 +65,13 @@
         android:layout_marginTop="@dimen/main_margin">
 
         <Button
+            android:id="@+id/btn_qty_plus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Qty plus"/>
 
         <Button
+            android:id="@+id/btn_qty_minus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Qty minus"/>
@@ -82,11 +84,13 @@
         android:orientation="horizontal">
 
         <Button
+            android:id="@+id/btn_supplier"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Supplier"/>
 
         <Button
+            android:id="@+id/btn_delete_product"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Delele product"/>

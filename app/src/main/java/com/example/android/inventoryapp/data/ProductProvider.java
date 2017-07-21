@@ -108,7 +108,9 @@ public class ProductProvider  extends ContentProvider {
         // so we know what content URI the Cursor was created for.
         // If the data at this URI changes, then we know we need to update the Cursor.
         cursor.setNotificationUri(getContext().getContentResolver(), uri);
+
         DatabaseUtils.dumpCursor(cursor);
+
         // Return the cursor
         return cursor;
     }

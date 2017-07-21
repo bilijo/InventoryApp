@@ -1,6 +1,7 @@
 package com.example.android.inventoryapp;
 
 import android.app.LoaderManager;
+import android.content.ContentValues;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
@@ -8,9 +9,13 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
+
 import com.example.android.inventoryapp.data.ProductContract.ProductEntry;
 
 /**
@@ -19,6 +24,8 @@ import com.example.android.inventoryapp.data.ProductContract.ProductEntry;
 
 public class ProductActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor> {
+
+    public static final String LOG_TAG = ProductActivity.class.getSimpleName();
 
     /** Identifier for the product data loader */
     private static final int EXISTING_PRODUCT_LOADER = 0;
@@ -61,15 +68,15 @@ public class ProductActivity extends AppCompatActivity implements
         Intent intent = getIntent();
         mCurrentProductUri = intent.getData();
 
+        Log.d(LOG_TAG, "intent.getData(): " + mCurrentProductUri );
+
         // If the intent DOES NOT contain a product content URI, then we know that we are
         // creating a new product.
         if (mCurrentProductUri == null) {
             // This is a new product, so change the app bar to say "Add a Product"
             setTitle(getString(R.string.product_activity_title_new_product));
 
-            // Invalidate the options menu, so the "Delete" menu option can be hidden.
-            // (It doesn't make sense to delete a product that hasn't been created yet.)
-            invalidateOptionsMenu();
+
         } else {
             // Otherwise this is an existing product, so change app bar to say "Edit Product"
             setTitle(getString(R.string.product_activity_title_edit_product));
@@ -94,12 +101,89 @@ public class ProductActivity extends AppCompatActivity implements
 
     }
 
+    /**
+     * Get user input from editor and save product into database.
+     */
+    private void saveProduct() {
+        // Read from input fields
+        // Use trim to eliminate leading or trailing white space
+        String nameString = mNameEditText.getText().toString().trim();
+        String qtyString = mQtyEditText.getText().toString().trim();
+        String priceString = mPriceEditText.getText().toString().trim();
 
+        // Check if this is supposed to be a new product
+        // and check if all the fields in the editor are blank
+        if (mCurrentProductUri == null &&
+                TextUtils.isEmpty(nameString) && TextUtils.isEmpty(qtyString) &&
+                TextUtils.isEmpty(priceString)) {
+            // Since no fields were modified, we can return early without creating a new product.
+            // No need to create ContentValues and no need to do any ContentProvider operations.
+            return;
+        }
+
+        // Create a ContentValues object where column names are the keys,
+        // and product attributes from the editor are the values.
+        ContentValues values = new ContentValues();
+        values.put(ProductEntry.COLUMN_PRODUCT_NAME, nameString);
+
+        // If the quantity is not provided by the user, don't try to parse the string into an
+        // integer value. Use 0 by default.
+        int qty = 0;
+        if (!TextUtils.isEmpty(priceString)) {
+            qty = Integer.parseInt(priceString);
+        }
+        values.put(ProductEntry.COLUMN_PRODUCT_QTY, qty);
+
+         // If the price is not provided by the user, don't try to parse the string into an
+        // integer value. Use 0 by default.
+        int price = 0;
+        if (!TextUtils.isEmpty(priceString)) {
+            price = Integer.parseInt(priceString);
+        }
+        values.put(ProductEntry.COLUMN_PRODUCT_PRICE, price);
+
+        // Determine if this is a new or existing product by checking if mCurrentProductUri is null or not
+        if (mCurrentProductUri == null) {
+            // This is a NEW product, so insert a new product into the provider,
+            // returning the content URI for the new product.
+            Uri newUri = getContentResolver().insert(ProductEntry.CONTENT_URI, values);
+
+            // Show a toast message depending on whether or not the insertion was successful.
+            if (newUri == null) {
+                // If the new content URI is null, then there was an error with insertion.
+                Toast.makeText(this, getString(R.string.editor_insert_product_failed),
+                        Toast.LENGTH_SHORT).show();
+            } else {
+                // Otherwise, the insertion was successful and we can display a toast.
+                Toast.makeText(this, getString(R.string.editor_insert_product_successful),
+                        Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            // Otherwise this is an EXISTING product, so update the product with content URI: mCurrentProductUri
+            // and pass in the new ContentValues. Pass in null for the selection and selection args
+            // because mCurrentProductUri will already identify the correct row in the database that
+            // we want to modify.
+            int rowsAffected = getContentResolver().update(mCurrentProductUri, values, null, null);
+
+            // Show a toast message depending on whether or not the update was successful.
+            if (rowsAffected == 0) {
+                // If no rows were affected, then there was an error with the update.
+                Toast.makeText(this, getString(R.string.editor_update_product_failed),
+                        Toast.LENGTH_SHORT).show();
+            } else {
+                // Otherwise, the update was successful and we can display a toast.
+                Toast.makeText(this, getString(R.string.editor_update_product_successful),
+                        Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+    
+    
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        // Since the editor shows all pet attributes, define a projection that contains
-        // all columns from the pet table
+        // Since the editor shows all product attributes, define a projection that contains
+        // all columns from the product table
         String[] projection = {
                 ProductEntry._ID,
                 ProductEntry.COLUMN_PRODUCT_NAME,
@@ -108,7 +192,7 @@ public class ProductActivity extends AppCompatActivity implements
 
         // This loader will execute the ContentProvider's query method on a background thread
         return new CursorLoader(this,   // Parent activity context
-                mCurrentProductUri,         // Query the content URI for the current pet
+                mCurrentProductUri,         // Query the content URI for the current product
                 projection,             // Columns to include in the resulting Cursor
                 null,                   // No selection clause
                 null,                   // No selection arguments
@@ -125,7 +209,7 @@ public class ProductActivity extends AppCompatActivity implements
         // Proceed with moving to the first row of the cursor and reading data from it
         // (This should be the only row in the cursor)
         if (cursor.moveToFirst()) {
-            // Find the columns of pet attributes that we're interested in
+            // Find the columns of product attributes that we're interested in
             int nameColumnIndex = cursor.getColumnIndex(ProductEntry.COLUMN_PRODUCT_NAME);
             int qtyColumnIndex = cursor.getColumnIndex(ProductEntry.COLUMN_PRODUCT_QTY);
             int priceColumnIndex = cursor.getColumnIndex(ProductEntry.COLUMN_PRODUCT_PRICE);
