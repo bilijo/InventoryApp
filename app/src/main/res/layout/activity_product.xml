@@ -12,18 +12,10 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-
-
             <!-- Label -->
             <TextView
                 android:text="@string/product_order"
                 style="@style/CategoryStyle" />
-
-
-
-
-
-
 
         <!-- Input fields -->
         <LinearLayout
@@ -68,13 +60,19 @@
             android:id="@+id/btn_qty_plus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Qty plus"/>
+            android:text="Qty \n plus"/>
 
         <Button
             android:id="@+id/btn_qty_minus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Qty minus"/>
+            android:text="Qty \n minus"/>
+
+        <Button
+            android:id="@+id/btn_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="save \n product"/>
 
     </LinearLayout>
 

@@ -13,6 +13,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -99,6 +100,16 @@ public class ProductActivity extends AppCompatActivity implements
         mQtyEditText.setOnTouchListener(mTouchListener);
         mPriceEditText.setOnTouchListener(mTouchListener);
 
+
+        // Setup the save button click listener
+        Button saveButton = (Button) findViewById(R.id.btn_save);
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveProduct();
+            }
+        });
+
     }
 
     /**
@@ -177,7 +188,8 @@ public class ProductActivity extends AppCompatActivity implements
             }
         }
     }
-    
+
+
     
 
     @Override

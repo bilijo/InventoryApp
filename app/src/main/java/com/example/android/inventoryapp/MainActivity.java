@@ -109,13 +109,11 @@ public class MainActivity extends AppCompatActivity implements
 
     }
 
-
-
     @Override
     protected void onStart() {
         super.onStart();
         //insertProduct();
-        displayDatabaseInfo();
+        //displayDatabaseInfo();
     }
 
     /**
@@ -125,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements
     private void displayDatabaseInfo() {
 
         // Create and/or open a database to read from it
-       // SQLiteDatabase db = mDbHelper.getReadableDatabase();
+      //  SQLiteDatabase db = mDbHelper.getReadableDatabase();
 
     }
 
@@ -134,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements
      */
     private void insertProduct() {
         // Gets the database in write mode
-       // SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        //SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
         // Create a ContentValues object where column names are the keys,
         // and Umbrella's product attributes are the values.
