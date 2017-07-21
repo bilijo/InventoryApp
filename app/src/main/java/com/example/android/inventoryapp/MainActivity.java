@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements
                 Log.d(LOG_TAG, "onItemClick: ****************" );
                 Toast.makeText(MainActivity.this, "onItemClick: ", Toast.LENGTH_SHORT).show();
 
-                // Create new intent to go to {@link EditorActivity}
+                // Create new intent to go to {@link ProductActivity}
                 Intent intent = new Intent(MainActivity.this, ProductActivity.class);
 
                 // Form the content URI that represents the specific product that was clicked on,
@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements
 
                 Log.d(LOG_TAG, "onItemClick: " + currentProductUri);
 
-                // Launch the {@link EditorActivity} to display the data for the current product.
+                // Launch the {@link ProductActivity} to display the data for the current product.
                 startActivity(intent);
             }
         });
