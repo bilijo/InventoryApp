@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements
 
 
     /** Database helper that will provide us access to the database */
-    private ProductDbHelper mDbHelper;
+   // private ProductDbHelper mDbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements
 
         // To access our database, we instantiate our subclass of SQLiteOpenHelper
         // and pass the context, which is the current activity.
-        mDbHelper = new ProductDbHelper(this);
+        //mDbHelper = new ProductDbHelper(this);
 
          // Find the ListView which will be populated with the product data
         ListView productListView = (ListView) findViewById(R.id.list_item);
@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity implements
     private void displayDatabaseInfo() {
         //DatabaseUtils.dumpCursor(cursor);
         // Create and/or open a database to read from it
-        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+       // SQLiteDatabase db = mDbHelper.getReadableDatabase();
 
     }
 
@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements
      */
     private void insertProduct() {
         // Gets the database in write mode
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+       // SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
         // Create a ContentValues object where column names are the keys,
         // and Umbrella's product attributes are the values.
@@ -142,8 +142,8 @@ public class MainActivity extends AppCompatActivity implements
         values.put(ProductEntry.COLUMN_PRODUCT_QTY, 6);
         values.put(ProductEntry.COLUMN_PRODUCT_PRICE, 7.2);
 
-        // Insert a new row for Umbrella in the database, returning the ID of that new row.
-        long newRowId = db.insert(ProductEntry.TABLE_NAME, null, values);
+        // Insert a new row for Umbrella using a ContentResolver, returning the ID of that new row.
+        //long newUri = getContentResolver().insert(ProductEntry.CONTENT_URI, null, values);
     }
 
 
