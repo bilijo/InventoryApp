@@ -92,7 +92,6 @@ public class ProductActivity extends AppCompatActivity implements
         mQtyEditText = (EditText) findViewById(R.id.edit_product_qty);
         mPriceEditText = (EditText) findViewById(R.id.edit_product_price);
 
-
         // Setup OnTouchListeners on all the input fields, so we can determine if the user
         // has touched or modified them. This will let us know if there are unsaved changes
         // or not, if the user tries to leave the editor without saving.
@@ -100,13 +99,14 @@ public class ProductActivity extends AppCompatActivity implements
         mQtyEditText.setOnTouchListener(mTouchListener);
         mPriceEditText.setOnTouchListener(mTouchListener);
 
-
         // Setup the save button click listener
         Button saveButton = (Button) findViewById(R.id.btn_save);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 saveProduct();
+                // Exit activity
+                finish();
             }
         });
 
@@ -140,8 +140,8 @@ public class ProductActivity extends AppCompatActivity implements
         // If the quantity is not provided by the user, don't try to parse the string into an
         // integer value. Use 0 by default.
         int qty = 0;
-        if (!TextUtils.isEmpty(priceString)) {
-            qty = Integer.parseInt(priceString);
+        if (!TextUtils.isEmpty(qtyString)) {
+            qty = Integer.parseInt(qtyString);
         }
         values.put(ProductEntry.COLUMN_PRODUCT_QTY, qty);
 
@@ -189,8 +189,24 @@ public class ProductActivity extends AppCompatActivity implements
         }
     }
 
+    /**
+     * Increase decrease quantity.
+     */
+    public int plusMinusQuantity(String plusMinus, EditText vQty){
+        // check if Qty > 0
+        int intQty=Integer.parseInt(String.valueOf(vQty));
+        if (intQty > 0){
 
-    
+            if (plusMinus.equals("plus")){
+                // increase qty by 1
+                intQty++;
+            } else {
+                intQty--; // decrease by 1
+            }
+            Log.d(LOG_TAG, "intQty=" + intQty);
+        }
+        return intQty;
+    }
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
@@ -212,7 +228,7 @@ public class ProductActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+    public void onLoadFinished(Loader<Cursor> loader, final Cursor cursor) {
         // Bail early if the cursor is null or there is less than 1 row in the cursor
         if (cursor == null || cursor.getCount() < 1) {
             return;
@@ -223,18 +239,39 @@ public class ProductActivity extends AppCompatActivity implements
         if (cursor.moveToFirst()) {
             // Find the columns of product attributes that we're interested in
             int nameColumnIndex = cursor.getColumnIndex(ProductEntry.COLUMN_PRODUCT_NAME);
-            int qtyColumnIndex = cursor.getColumnIndex(ProductEntry.COLUMN_PRODUCT_QTY);
+            final int qtyColumnIndex = cursor.getColumnIndex(ProductEntry.COLUMN_PRODUCT_QTY);
             int priceColumnIndex = cursor.getColumnIndex(ProductEntry.COLUMN_PRODUCT_PRICE);
 
             // Extract out the value from the Cursor for the given column index
             String name = cursor.getString(nameColumnIndex);
-            int qty = cursor.getInt(qtyColumnIndex);
+            final int qty = cursor.getInt(qtyColumnIndex);
             int price = cursor.getInt(priceColumnIndex);
 
-            // Update the views on the screen with the values from the database
+
+
+            //Update the views on the screen with the values from the database
             mNameEditText.setText(name);
             mQtyEditText.setText(String.valueOf(qty));
             mPriceEditText.setText(String.valueOf(price));
+
+            // Setup the minus quantity button click listener
+            Button minusQtyButton = (Button) findViewById(R.id.btn_qty_minus);
+            minusQtyButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    mQtyEditText.setText(String.valueOf(plusMinusQuantity("minus", mQtyEditText)));
+                }
+            });
+            // Setup the plus quantity button click listener
+            Button plusQtyButton = (Button) findViewById(R.id.btn_qty_plus);
+            plusQtyButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    mQtyEditText.setText(String.valueOf(plusMinusQuantity("plus", mQtyEditText)));
+                }
+            });
 
         }
     }

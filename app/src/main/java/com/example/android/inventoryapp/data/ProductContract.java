@@ -85,6 +85,14 @@ public class ProductContract {
         public final static String COLUMN_PRODUCT_PRICE = "Price";
 
 
+        /**
+         * Image of the product (link Uri).
+         *
+         * Type: String
+         */
+        public final static String COLUMN_PRODUCT_IMAGE = "Image";
+
+
     }
 
 
