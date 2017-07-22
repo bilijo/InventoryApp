@@ -15,12 +15,14 @@
  */
 package com.example.android.inventoryapp;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 
@@ -73,7 +75,7 @@ public class ProductCursorAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
         // Find individual views that we want to modify in the list item layout
         TextView nameTextView = (TextView) view.findViewById(R.id.text_product_name);
-        TextView qtyTextView = (TextView) view.findViewById(R.id.text_product_quantity);
+        final TextView qtyTextView = (TextView) view.findViewById(R.id.text_product_quantity);
         TextView priceTextView = (TextView) view.findViewById(R.id.text_product_price);
 
         // Find the columns of product attributes that we're interested in
@@ -83,7 +85,7 @@ public class ProductCursorAdapter extends CursorAdapter {
 
         // Read the product attributes from the Cursor for the current product
         String productName = cursor.getString(nameColumnIndex);
-        String productQty = cursor.getString(qtyColumnIndex);
+        final String productQty = cursor.getString(qtyColumnIndex);
         String productPrice = cursor.getString(priceColumnIndex);
 
         // If the product price is empty string or null, then use some default text
@@ -97,5 +99,23 @@ public class ProductCursorAdapter extends CursorAdapter {
         nameTextView.setText(productName);
         priceTextView.setText(productPrice);
         qtyTextView.setText(productQty);
+
+        // Setup the sale product button click listener
+        Button decreaseQty = (Button) view.findViewById(R.id.sale_button);
+
+        decreaseQty.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                int minus = Integer.parseInt(String.valueOf(qtyTextView.getText()));
+                if (minus > 0){
+                    minus--;
+                    String minusText = String.valueOf(minus);
+                    qtyTextView.setText(minusText);
+                }
+            }
+        });
+
+
     }
+
 }

@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements
         productListView.setAdapter(mCursorAdapter);
 
 
-        // Setup the item click listener
+        // Setup the product item click listener
         productListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
@@ -107,7 +107,9 @@ public class MainActivity extends AppCompatActivity implements
         // Kick off the loader
         getLoaderManager().initLoader(PRODUCT_LOADER, null, this);
 
-    }
+    } // fin OnCreate()
+
+
 
     @Override
     protected void onStart() {
@@ -175,5 +177,7 @@ public class MainActivity extends AppCompatActivity implements
         // Callback called when the data needs to be deleted
         mCursorAdapter.swapCursor(null);
     }
+
+
     
 }

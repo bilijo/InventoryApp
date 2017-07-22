@@ -28,23 +28,35 @@ public class ProductActivity extends AppCompatActivity implements
 
     public static final String LOG_TAG = ProductActivity.class.getSimpleName();
 
-    /** Identifier for the product data loader */
+    /**
+     * Identifier for the product data loader
+     */
     private static final int EXISTING_PRODUCT_LOADER = 0;
 
-    /** Content URI for the existing product (null if it's a new product) */
+    /**
+     * Content URI for the existing product (null if it's a new product)
+     */
     private Uri mCurrentProductUri;
 
-    /** EditText field to enter the product's name */
+    /**
+     * EditText field to enter the product's name
+     */
     private EditText mNameEditText;
 
-    /** EditText field to enter the product's Quantity */
+    /**
+     * EditText field to enter the product's Quantity
+     */
     private EditText mQtyEditText;
 
-    /** EditText field to enter the product's price */
+    /**
+     * EditText field to enter the product's price
+     */
     private EditText mPriceEditText;
 
 
- /** Boolean flag that keeps track of whether the product has been edited (true) or not (false) */
+    /**
+     * Boolean flag that keeps track of whether the product has been edited (true) or not (false)
+     */
     private boolean mProductHasChanged = false;
 
     /**
@@ -69,7 +81,7 @@ public class ProductActivity extends AppCompatActivity implements
         Intent intent = getIntent();
         mCurrentProductUri = intent.getData();
 
-        Log.d(LOG_TAG, "intent.getData(): " + mCurrentProductUri );
+        Log.d(LOG_TAG, "intent.getData(): " + mCurrentProductUri);
 
         // If the intent DOES NOT contain a product content URI, then we know that we are
         // creating a new product.
@@ -145,7 +157,7 @@ public class ProductActivity extends AppCompatActivity implements
         }
         values.put(ProductEntry.COLUMN_PRODUCT_QTY, qty);
 
-         // If the price is not provided by the user, don't try to parse the string into an
+        // If the price is not provided by the user, don't try to parse the string into an
         // integer value. Use 0 by default.
         int price = 0;
         if (!TextUtils.isEmpty(priceString)) {
@@ -192,21 +204,57 @@ public class ProductActivity extends AppCompatActivity implements
     /**
      * Increase decrease quantity.
      */
-    public int plusMinusQuantity(String plusMinus, EditText vQty){
-        // check if Qty > 0
-        int intQty=Integer.parseInt(String.valueOf(vQty));
-        if (intQty > 0){
+    public int plusMinusQuantity(String plusMinus, int intQty) {
+        // check if Qty >= 0
 
-            if (plusMinus.equals("plus")){
+        if (intQty > 0) {
+            if (plusMinus.equals("plus")) {
                 // increase qty by 1
                 intQty++;
             } else {
                 intQty--; // decrease by 1
             }
             Log.d(LOG_TAG, "intQty=" + intQty);
+        } else {
+            Toast.makeText(this, getString(R.string.editor_quantity_no_match),
+                    Toast.LENGTH_SHORT).show();
         }
         return intQty;
     }
+
+    /**
+     *  increase quantity.
+     */
+    public int plusQuantity(int intQty) {
+        // check if Qty >= 0
+
+        if (intQty >= 0) {
+
+            intQty++; // increase by 1
+        } else {
+            Toast.makeText(this, getString(R.string.editor_quantity_no_match),
+                    Toast.LENGTH_SHORT).show();
+        }
+        return intQty;
+    }
+
+    /**
+     *  decrease quantity.
+     */
+    public int minusQuantity(int intQty) {
+        // check if Qty >= 0
+
+        if (intQty > 0) {
+
+            intQty--; // decrease by 1
+            } else {
+            Toast.makeText(this, getString(R.string.editor_quantity_no_match),
+                    Toast.LENGTH_SHORT).show();
+        }
+        return intQty;
+    }
+
+
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
@@ -216,7 +264,7 @@ public class ProductActivity extends AppCompatActivity implements
                 ProductEntry._ID,
                 ProductEntry.COLUMN_PRODUCT_NAME,
                 ProductEntry.COLUMN_PRODUCT_QTY,
-                ProductEntry.COLUMN_PRODUCT_PRICE };
+                ProductEntry.COLUMN_PRODUCT_PRICE};
 
         // This loader will execute the ContentProvider's query method on a background thread
         return new CursorLoader(this,   // Parent activity context
@@ -248,7 +296,6 @@ public class ProductActivity extends AppCompatActivity implements
             int price = cursor.getInt(priceColumnIndex);
 
 
-
             //Update the views on the screen with the values from the database
             mNameEditText.setText(name);
             mQtyEditText.setText(String.valueOf(qty));
@@ -259,8 +306,9 @@ public class ProductActivity extends AppCompatActivity implements
             minusQtyButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    int mQtyInteger = Integer.parseInt(String.valueOf(mQtyEditText.getText().toString()));
 
-                    mQtyEditText.setText(String.valueOf(plusMinusQuantity("minus", mQtyEditText)));
+                    mQtyEditText.setText(String.valueOf(minusQuantity( mQtyInteger)));
                 }
             });
             // Setup the plus quantity button click listener
@@ -268,8 +316,9 @@ public class ProductActivity extends AppCompatActivity implements
             plusQtyButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    int mQtyInteger = Integer.parseInt(String.valueOf(mQtyEditText.getText().toString()));
 
-                    mQtyEditText.setText(String.valueOf(plusMinusQuantity("plus", mQtyEditText)));
+                    mQtyEditText.setText(String.valueOf(plusQuantity( mQtyInteger)));
                 }
             });
 
@@ -282,7 +331,8 @@ public class ProductActivity extends AppCompatActivity implements
         mNameEditText.setText("");
         mQtyEditText.setText("");
         mPriceEditText.setText("");
-
     }
+
+
 
 }
