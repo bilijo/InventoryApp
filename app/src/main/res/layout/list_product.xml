@@ -27,12 +27,12 @@
         android:layout_marginRight="26dp"
         android:text="@string/text_product_prod_price"/>
 
-    <!-- image field -->
+    <!-- image field
     <TextView
         android:id="@+id/edit_product_image"
         android:scaleType="center"
-
         style="@style/EditorImagedStyle" />
+        -->
 
     <Button
         android:id="@+id/sale_button"
