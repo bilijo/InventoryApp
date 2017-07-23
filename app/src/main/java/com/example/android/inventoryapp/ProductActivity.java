@@ -1,8 +1,10 @@
 package com.example.android.inventoryapp;
 
+import android.app.AlertDialog;
 import android.app.LoaderManager;
 import android.content.ContentValues;
 import android.content.CursorLoader;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
@@ -117,10 +119,20 @@ public class ProductActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
                 saveProduct();
-                // Exit activity
-                finish();
+
             }
         });
+
+        // Setup the delete button click listener
+        Button deleteButton = (Button) findViewById(R.id.btn_delete_product);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               showDeleteConfirmationDialog();
+
+            }
+        });
+
 
     }
 
@@ -170,6 +182,7 @@ public class ProductActivity extends AppCompatActivity implements
             // This is a NEW product, so insert a new product into the provider,
             // returning the content URI for the new product.
             Uri newUri = getContentResolver().insert(ProductEntry.CONTENT_URI, values);
+            Log.d(LOG_TAG, "saveProduct newUri: " + newUri);
 
             // Show a toast message depending on whether or not the insertion was successful.
             if (newUri == null) {
@@ -199,28 +212,15 @@ public class ProductActivity extends AppCompatActivity implements
                         Toast.LENGTH_SHORT).show();
             }
         }
+
+      if (TextUtils.isEmpty(qtyString)){
+          Toast.makeText(this, getString(R.string.editor_update_product_failed),
+                  Toast.LENGTH_SHORT).show();
+      }
+
+
     }
 
-    /**
-     * Increase decrease quantity.
-     */
-    public int plusMinusQuantity(String plusMinus, int intQty) {
-        // check if Qty >= 0
-
-        if (intQty > 0) {
-            if (plusMinus.equals("plus")) {
-                // increase qty by 1
-                intQty++;
-            } else {
-                intQty--; // decrease by 1
-            }
-            Log.d(LOG_TAG, "intQty=" + intQty);
-        } else {
-            Toast.makeText(this, getString(R.string.editor_quantity_no_match),
-                    Toast.LENGTH_SHORT).show();
-        }
-        return intQty;
-    }
 
     /**
      *  increase quantity.
@@ -334,5 +334,60 @@ public class ProductActivity extends AppCompatActivity implements
     }
 
 
+
+    private void showDeleteConfirmationDialog() {
+        // Create an AlertDialog.Builder and set the message, and click listeners
+        // for the postivie and negative buttons on the dialog.
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.delete_dialog_msg);
+        builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked the "Delete" button, so delete the product.
+                deleteProduct();
+            }
+        });
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked the "Cancel" button, so dismiss the dialog
+                // and continue editing the product.
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        // Create and show the AlertDialog
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+    
+
+    /**
+     * Perform the deletion of the product in the database.
+     */
+    private void deleteProduct() {
+        // Only perform the delete if this is an existing product.
+        // See mCurrentProductUri in onCreateLoader() method
+        if (mCurrentProductUri != null) {
+            // Call the ContentResolver to delete the product at the given content URI.
+            // Pass in null for the selection and selection args because the mCurrentProductUri
+            // content URI already identifies the product that we want.
+            int rowsDeleted = getContentResolver().delete(mCurrentProductUri, null, null);
+
+       // Toast.makeText(this, getString(R.string.editor_delete_product_successful),Toast.LENGTH_SHORT).show();
+        // Show a toast message depending on whether or not the delete was successful.
+            if (rowsDeleted == 0) {
+                // If no rows were deleted, then there was an error with the delete.
+                Toast.makeText(this, getString(R.string.editor_delete_product_failed),
+                        Toast.LENGTH_SHORT).show();
+            } else {
+                // Otherwise, the delete was successful and we can display a toast.
+                Toast.makeText(this, getString(R.string.editor_delete_product_successful),
+                        Toast.LENGTH_SHORT).show();
+            }
+        }
+        // Exit activity
+        finish();
+    }
 
 }

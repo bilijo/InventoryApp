@@ -48,12 +48,12 @@
 
 
 
-    <!-- Button to contact the supplier -->
+    <!-- Button to add a new product -->
     <Button
         android:id="@+id/btn_order_product"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="Order a new product"/>
+        android:text="@string/product_activity_title_new_product"/>
 
 </LinearLayout>

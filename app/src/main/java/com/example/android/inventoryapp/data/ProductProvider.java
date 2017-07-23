@@ -10,7 +10,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.widget.Toast;
+
 import com.example.android.inventoryapp.data.ProductContract.ProductEntry;
+
 /**
  * Created by dam on 20.07.2017.
  */
@@ -39,18 +42,18 @@ public class ProductProvider  extends ContentProvider {
         // should recognize. All paths added to the UriMatcher have a corresponding code to return
         // when a match is found.
 
-        // The content URI of the form "content://com.example.android.products/products" will map to the
+        // The content URI of the form "content://com.example.android.inventoryapp/products" will map to the
         // integer code {@link #PRODUCTS}. This URI is used to provide access to MULTIPLE rows
         // of the products table.
         sUriMatcher.addURI(ProductContract.CONTENT_AUTHORITY, ProductContract.PATH_PRODUCTS, PRODUCTS);
 
-        // The content URI of the form "content://com.example.android.products/products/#" will map to the
+        // The content URI of the form "content://com.example.android.inventoryapp/products/#" will map to the
         // integer code {@link #PRODUCT_ID}. This URI is used to provide access to ONE single row
         // of the products table.
         //
         // In this case, the "#" wildcard is used where "#" can be substituted for an integer.
-        // For example, "content://com.example.android.products/products/3" matches, but
-        // "content://com.example.android.products/products" (without a number at the end) doesn't match.
+        // For example, "content://com.example.android.inventoryapp/products/3" matches, but
+        // "content://com.example.android.inventoryapp/products" (without a number at the end) doesn't match.
         sUriMatcher.addURI(ProductContract.CONTENT_AUTHORITY, ProductContract.PATH_PRODUCTS + "/#", PRODUCT_ID);
     }
 
@@ -133,8 +136,11 @@ public class ProductProvider  extends ContentProvider {
     private Uri insertProduct(Uri uri, ContentValues values) {
         // Check that the name is not null
         String name = values.getAsString(ProductEntry.COLUMN_PRODUCT_NAME);
+        Log.d(LOG_TAG, "insertProduct: "+name);
         if (name == null) {
             throw new IllegalArgumentException("Product requires a name");
+
+
         }
 
         // If the quantity is provided, check that it's greater than or equal to 0

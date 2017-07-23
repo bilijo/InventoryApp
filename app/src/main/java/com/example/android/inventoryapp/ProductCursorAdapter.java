@@ -25,6 +25,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android.inventoryapp.R;
 import com.example.android.inventoryapp.data.ProductContract.ProductEntry;
@@ -72,7 +73,7 @@ public class ProductCursorAdapter extends CursorAdapter {
      *                correct row.
      */
     @Override
-    public void bindView(View view, Context context, Cursor cursor) {
+    public void bindView(View view, final Context context, Cursor cursor) {
         // Find individual views that we want to modify in the list item layout
         TextView nameTextView = (TextView) view.findViewById(R.id.text_product_name);
         final TextView qtyTextView = (TextView) view.findViewById(R.id.text_product_quantity);
@@ -111,6 +112,8 @@ public class ProductCursorAdapter extends CursorAdapter {
                     minus--;
                     String minusText = String.valueOf(minus);
                     qtyTextView.setText(minusText);
+                }else {
+                    Toast.makeText(context, R.string.sale_quantity_no_match,Toast.LENGTH_SHORT).show();
                 }
             }
         });

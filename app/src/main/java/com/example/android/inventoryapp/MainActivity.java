@@ -81,9 +81,6 @@ public class MainActivity extends AppCompatActivity implements
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
 
-                Log.d(LOG_TAG, "onItemClick: ****************" );
-                Toast.makeText(MainActivity.this, "onItemClick: ", Toast.LENGTH_SHORT).show();
-
                 // Create new intent to go to {@link ProductActivity}
                 Intent intent = new Intent(MainActivity.this, ProductActivity.class);
 
