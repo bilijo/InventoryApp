@@ -3,6 +3,7 @@
     <string name="text_product_prod_name">"Name"</string>
     <string name="text_product_prod_qty">"Quantity"</string>
     <string name="text_product_prod_price">"Price"</string>
+    <string name="text_product_prod_image">"image"</string>
 
     <!-- Label for overview category of attributes in the product editor [CHAR LIMIT=30] -->
     <string name="product_order">Add Product</string>
@@ -55,6 +56,9 @@
     <string name="hint_product_qty">Quantity</string>
     <!-- Text hint for name field in the editor [CHAR LIMIT=30] -->
     <string name="hint_product_price">Price</string>
+    <!-- Text hint for name field in the editor [CHAR LIMIT=30] -->
+    <string name="hint_product_image">Image</string>
+
     
     <!-- Title for the activity to add a new product [CHAR LIMIT=20] -->
     <string name="product_activity_title_new_product">Add a Product</string>

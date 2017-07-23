@@ -140,7 +140,6 @@ public class ProductProvider  extends ContentProvider {
         if (name == null) {
             throw new IllegalArgumentException("Product requires a name");
 
-
         }
 
         // If the quantity is provided, check that it's greater than or equal to 0

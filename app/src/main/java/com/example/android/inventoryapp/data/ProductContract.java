@@ -84,13 +84,20 @@ public class ProductContract {
          */
         public final static String COLUMN_PRODUCT_PRICE = "Price";
 
+        /**
+         * Supplier's contact info.
+         *
+         * Type: STRING
+         */
+     //   public final static String COLUMN_PRODUCT_SUPPLIER_CONTACT = "email";
+
 
         /**
          * Image of the product (link Uri).
          *
-         * Type: String
+         * Type: STRING
          */
-        public final static String COLUMN_PRODUCT_IMAGE = "Image";
+     //   public final static String COLUMN_PRODUCT_IMAGE = "Image";
 
 
     }
