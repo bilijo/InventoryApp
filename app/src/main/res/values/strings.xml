@@ -60,8 +60,9 @@
     <string name="product_activity_title_new_product">Add a Product</string>
     <!-- Title for the activity to edit an existing product [CHAR LIMIT=20] -->
     <string name="product_activity_title_edit_product">Edit Product</string>
-    
-    
+
+    <!-- Add a product name [CHAR LIMIT=20] -->
+    <string name="add_name_to_product">Please, add a Product name</string>
 
     <!-- Label for editor menu option to save product and leave editor [CHAR LIMIT=20] -->
     <string name="action_save">Save</string>

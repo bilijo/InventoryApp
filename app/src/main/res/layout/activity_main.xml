@@ -5,8 +5,19 @@
     android:layout_height="match_parent"
     android:layout_margin="@dimen/main_margin"
     android:orientation="vertical"
-
     tools:context="com.example.android.inventoryapp.MainActivity">
+
+
+        <!-- Button to add a new product -->
+        <Button
+            android:id="@+id/btn_order_product"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/main_margin"
+            android:text="@string/product_activity_title_new_product"/>
+
+
+
 <!-- headers of the list -->
 <LinearLayout
     android:layout_width="match_parent"
@@ -29,7 +40,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/text_product_prod_price"/>
+
 </LinearLayout>
+
+    <!-- midldle of the list -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
 
     <!-- the list of products-->
     <ListView
@@ -46,14 +64,8 @@
         android:text="Database is empty , please populate it with some items"
         android:visibility="visible"/>
 
+    </LinearLayout>
 
 
-    <!-- Button to add a new product -->
-    <Button
-        android:id="@+id/btn_order_product"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="@string/product_activity_title_new_product"/>
 
 </LinearLayout>

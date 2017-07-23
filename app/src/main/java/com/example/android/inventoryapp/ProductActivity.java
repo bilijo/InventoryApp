@@ -133,7 +133,6 @@ public class ProductActivity extends AppCompatActivity implements
             }
         });
 
-
     }
 
     /**
@@ -146,13 +145,13 @@ public class ProductActivity extends AppCompatActivity implements
         String qtyString = mQtyEditText.getText().toString().trim();
         String priceString = mPriceEditText.getText().toString().trim();
 
-        // Check if this is supposed to be a new product
-        // and check if all the fields in the editor are blank
-        if (mCurrentProductUri == null &&
-                TextUtils.isEmpty(nameString) && TextUtils.isEmpty(qtyString) &&
+        // Check if all the fields in the editor are blank
+        if (    TextUtils.isEmpty(nameString) || TextUtils.isEmpty(qtyString) &&
                 TextUtils.isEmpty(priceString)) {
             // Since no fields were modified, we can return early without creating a new product.
             // No need to create ContentValues and no need to do any ContentProvider operations.
+            Toast.makeText(this, getString(R.string.add_name_to_product),
+                    Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -212,13 +211,7 @@ public class ProductActivity extends AppCompatActivity implements
                         Toast.LENGTH_SHORT).show();
             }
         }
-
-      if (TextUtils.isEmpty(qtyString)){
-          Toast.makeText(this, getString(R.string.editor_update_product_failed),
-                  Toast.LENGTH_SHORT).show();
-      }
-
-
+finish();
     }
 
 
