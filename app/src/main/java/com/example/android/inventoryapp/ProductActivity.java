@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -17,11 +18,12 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.android.inventoryapp.data.ProductContract.ProductEntry;
 
-import static com.example.android.inventoryapp.R.id.btn_supplier;
+import static android.R.attr.data;
 
 /**
  * Created by dam on 20.07.2017.
@@ -79,10 +81,20 @@ public class ProductActivity extends AppCompatActivity implements
         }
     };
 
+    // Image to display in layout view
+    private ImageView imageView;
+    //Image raw source
+    private Bitmap bitMap;
+    //Image convert to an array before to be stored in the Database
+    private byte[] imageByteArray;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product);
+
+        imageView= (ImageView) findViewById(R.id.image_view);
+
 
         // Examine the intent that was used to launch this activity,
         // in order to figure out if we're creating a new product or editing an existing one.
@@ -140,7 +152,7 @@ public class ProductActivity extends AppCompatActivity implements
         });
 
         // only for debugging
-            final String dataEmail = "toto@titi.com";
+            final String dataEmail = "product@supplier.com";
         // Setup the email order button click listener
         Button emailButton = (Button) findViewById(R.id.btn_supplier);
         emailButton.setOnClickListener(new View.OnClickListener() {
@@ -153,6 +165,10 @@ public class ProductActivity extends AppCompatActivity implements
 
 
     }
+
+
+
+
 
     /**
      * Intent object to launch Email client to send an Email to the given recipients.
@@ -200,17 +216,18 @@ public class ProductActivity extends AppCompatActivity implements
                 return;
             }
 
+        /*
         while (TextUtils.isEmpty(emailString)){
             Toast.makeText(this, getString(R.string.add_email_to_product),
                     Toast.LENGTH_SHORT).show();
             return;
         }
-
+        */
         // Create a ContentValues object where column names are the keys,
         // and product attributes from the editor are the values.
         ContentValues values = new ContentValues();
         values.put(ProductEntry.COLUMN_PRODUCT_NAME, nameString);
-        values.put(ProductEntry.COLUMN_PRODUCT_SUPPLIER_EMAIL, emailString);
+
 
         // If the quantity is not provided by the user, don't try to parse the string into an
         // integer value. Use 0 by default.
@@ -227,6 +244,14 @@ public class ProductActivity extends AppCompatActivity implements
             price = Integer.parseInt(priceString);
         }
         values.put(ProductEntry.COLUMN_PRODUCT_PRICE, price);
+
+        // If the email is not provided by the user, don't try to parse the string into an
+        // string value. Use 0 by default.
+        String email = "product@supplier.com";
+        if (!TextUtils.isEmpty(emailString)) {
+            email = emailString;
+        }
+        values.put(ProductEntry.COLUMN_PRODUCT_SUPPLIER_EMAIL, email);
 
         // Determine if this is a new or existing product by checking if mCurrentProductUri is null or not
         if (mCurrentProductUri == null) {
@@ -251,6 +276,7 @@ public class ProductActivity extends AppCompatActivity implements
             // because mCurrentProductUri will already identify the correct row in the database that
             // we want to modify.
             int rowsAffected = getContentResolver().update(mCurrentProductUri, values, null, null);
+            Log.d(LOG_TAG, "mCurrentProductUri: "+mCurrentProductUri);
 
             // Show a toast message depending on whether or not the update was successful.
             if (rowsAffected == 0) {
@@ -309,7 +335,8 @@ finish();
                 ProductEntry._ID,
                 ProductEntry.COLUMN_PRODUCT_NAME,
                 ProductEntry.COLUMN_PRODUCT_QTY,
-                ProductEntry.COLUMN_PRODUCT_PRICE};
+                ProductEntry.COLUMN_PRODUCT_PRICE,
+                ProductEntry.COLUMN_PRODUCT_SUPPLIER_EMAIL};
 
         // This loader will execute the ContentProvider's query method on a background thread
         return new CursorLoader(this,   // Parent activity context
@@ -334,17 +361,20 @@ finish();
             int nameColumnIndex = cursor.getColumnIndex(ProductEntry.COLUMN_PRODUCT_NAME);
             final int qtyColumnIndex = cursor.getColumnIndex(ProductEntry.COLUMN_PRODUCT_QTY);
             int priceColumnIndex = cursor.getColumnIndex(ProductEntry.COLUMN_PRODUCT_PRICE);
+            int emailColumnIndex = cursor.getColumnIndex(ProductEntry.COLUMN_PRODUCT_SUPPLIER_EMAIL);
 
             // Extract out the value from the Cursor for the given column index
             String name = cursor.getString(nameColumnIndex);
             final int qty = cursor.getInt(qtyColumnIndex);
             int price = cursor.getInt(priceColumnIndex);
+            String email = cursor.getString(emailColumnIndex);
 
 
             //Update the views on the screen with the values from the database
             mNameEditText.setText(name);
             mQtyEditText.setText(String.valueOf(qty));
             mPriceEditText.setText(String.valueOf(price));
+            mEmailEditText.setText(String.valueOf(email));
 
             // Setup the minus quantity button click listener
             Button minusQtyButton = (Button) findViewById(R.id.btn_qty_minus);
@@ -376,6 +406,7 @@ finish();
         mNameEditText.setText("");
         mQtyEditText.setText("");
         mPriceEditText.setText("");
+        mEmailEditText.setText("");
     }
 
 

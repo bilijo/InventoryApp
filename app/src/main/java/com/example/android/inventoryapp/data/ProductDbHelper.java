@@ -48,11 +48,18 @@ public class ProductDbHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_CREATE_PRODUCTS_TABLE);
     }
 
+    private static final String SQL_DELETE_ENTRIES =
+            "DROP TABLE IF EXISTS " + ProductEntry.TABLE_NAME;
     /**
      * This is called when the database needs to be upgraded.
      */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // The database is still at version 1, so there's nothing to do be done here.
+
+        // This database is only a cache for online data, so its upgrade policy is
+        // to simply to discard the data and start over
+        db.execSQL(SQL_DELETE_ENTRIES);
+        onCreate(db);
     }
 }

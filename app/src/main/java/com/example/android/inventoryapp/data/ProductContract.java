@@ -85,7 +85,7 @@ public class ProductContract {
         public final static String COLUMN_PRODUCT_PRICE = "Price";
 
         /**
-         * Supplier's contact info.
+         * Supplier's contact email.
          *
          * Type: STRING
          */

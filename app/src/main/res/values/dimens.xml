@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="main_margin">16dp</dimen>
+    <dimen name="list_item_margin_right">20dp</dimen>
+    <dimen name="list_name_width">50dp</dimen>
+    <dimen name="list_email_width">50dp</dimen>
+    <dimen name="list_qty_width">40dp</dimen>
+    <dimen name="list_price_width">40dp</dimen>
 
 </resources>

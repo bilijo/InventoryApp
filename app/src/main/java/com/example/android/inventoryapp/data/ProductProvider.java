@@ -241,6 +241,7 @@ public class ProductProvider  extends ContentProvider {
         // check that the name value is not null.
         if (values.containsKey(ProductEntry.COLUMN_PRODUCT_SUPPLIER_EMAIL)) {
             String email = values.getAsString(ProductEntry.COLUMN_PRODUCT_SUPPLIER_EMAIL);
+            Log.d(LOG_TAG, "email: " + email);
             if (email == null) {
                 throw new IllegalArgumentException("Product requires a email");
             }
