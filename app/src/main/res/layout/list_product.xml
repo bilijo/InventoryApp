@@ -27,6 +27,13 @@
         android:layout_marginRight="26dp"
         android:text="@string/text_product_prod_price"/>
 
+    <TextView
+        android:id="@+id/text_product_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="26dp"
+        android:text="@string/text_product_prod_email"/>
+
     <!-- image field
     <TextView
         android:id="@+id/edit_product_image"

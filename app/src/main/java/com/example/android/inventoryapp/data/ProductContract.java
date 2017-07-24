@@ -89,7 +89,7 @@ public class ProductContract {
          *
          * Type: STRING
          */
-     //   public final static String COLUMN_PRODUCT_SUPPLIER_CONTACT = "email";
+      public final static String COLUMN_PRODUCT_SUPPLIER_EMAIL = "email";
 
 
         /**
@@ -97,7 +97,7 @@ public class ProductContract {
          *
          * Type: STRING
          */
-     //   public final static String COLUMN_PRODUCT_IMAGE = "Image";
+      public final static String COLUMN_PRODUCT_IMAGE = "Image";
 
 
     }

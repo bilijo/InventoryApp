@@ -21,6 +21,8 @@ import android.widget.Toast;
 
 import com.example.android.inventoryapp.data.ProductContract.ProductEntry;
 
+import static com.example.android.inventoryapp.R.id.btn_supplier;
+
 /**
  * Created by dam on 20.07.2017.
  */
@@ -55,6 +57,10 @@ public class ProductActivity extends AppCompatActivity implements
      */
     private EditText mPriceEditText;
 
+    /**
+     * EditText field to enter the product supplier's email
+     */
+    private EditText mEmailEditText;
 
     /**
      * Boolean flag that keeps track of whether the product has been edited (true) or not (false)
@@ -91,7 +97,6 @@ public class ProductActivity extends AppCompatActivity implements
             // This is a new product, so change the app bar to say "Add a Product"
             setTitle(getString(R.string.product_activity_title_new_product));
 
-
         } else {
             // Otherwise this is an existing product, so change app bar to say "Edit Product"
             setTitle(getString(R.string.product_activity_title_edit_product));
@@ -105,6 +110,7 @@ public class ProductActivity extends AppCompatActivity implements
         mNameEditText = (EditText) findViewById(R.id.edit_product_name);
         mQtyEditText = (EditText) findViewById(R.id.edit_product_qty);
         mPriceEditText = (EditText) findViewById(R.id.edit_product_price);
+        mEmailEditText = (EditText) findViewById(R.id.edit_product_email);
 
         // Setup OnTouchListeners on all the input fields, so we can determine if the user
         // has touched or modified them. This will let us know if there are unsaved changes
@@ -112,6 +118,7 @@ public class ProductActivity extends AppCompatActivity implements
         mNameEditText.setOnTouchListener(mTouchListener);
         mQtyEditText.setOnTouchListener(mTouchListener);
         mPriceEditText.setOnTouchListener(mTouchListener);
+        mEmailEditText.setOnTouchListener(mTouchListener);
 
         // Setup the save button click listener
         Button saveButton = (Button) findViewById(R.id.btn_save);
@@ -119,7 +126,6 @@ public class ProductActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
                 saveProduct();
-
             }
         });
 
@@ -133,7 +139,47 @@ public class ProductActivity extends AppCompatActivity implements
             }
         });
 
+        // only for debugging
+            final String dataEmail = "toto@titi.com";
+        // Setup the email order button click listener
+        Button emailButton = (Button) findViewById(R.id.btn_supplier);
+        emailButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendEmail(dataEmail);
+
+            }
+        });
+
+
     }
+
+    /**
+     * Intent object to launch Email client to send an Email to the given recipients.
+     */
+    protected void sendEmail(String vEmail) {
+        Log.i("Send email", "");
+        String[] TO = {vEmail};
+        String[] CC = {""};
+        Intent emailIntent = new Intent(Intent.ACTION_SEND);
+
+        emailIntent.setData(Uri.parse("mailto:"+vEmail));
+        emailIntent.setType("text/plain");
+        emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
+        emailIntent.putExtra(Intent.EXTRA_CC, CC);
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Your subject");
+        emailIntent.putExtra(Intent.EXTRA_TEXT, "Email message goes here");
+
+        try {
+            startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+            finish();
+            Log.i(LOG_TAG,"Finished sending email...");
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(ProductActivity.this, "There is no email client installed.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
 
     /**
      * Get user input from editor and save product into database.
@@ -144,22 +190,27 @@ public class ProductActivity extends AppCompatActivity implements
         String nameString = mNameEditText.getText().toString().trim();
         String qtyString = mQtyEditText.getText().toString().trim();
         String priceString = mPriceEditText.getText().toString().trim();
+        String emailString = mEmailEditText.getText().toString().trim();
 
         // Check if all the fields in the editor are blank
-
 
             while (TextUtils.isEmpty(nameString)){
                 Toast.makeText(this, getString(R.string.add_name_to_product),
                         Toast.LENGTH_SHORT).show();
                 return;
-
             }
 
+        while (TextUtils.isEmpty(emailString)){
+            Toast.makeText(this, getString(R.string.add_email_to_product),
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         // Create a ContentValues object where column names are the keys,
         // and product attributes from the editor are the values.
         ContentValues values = new ContentValues();
         values.put(ProductEntry.COLUMN_PRODUCT_NAME, nameString);
+        values.put(ProductEntry.COLUMN_PRODUCT_SUPPLIER_EMAIL, emailString);
 
         // If the quantity is not provided by the user, don't try to parse the string into an
         // integer value. Use 0 by default.

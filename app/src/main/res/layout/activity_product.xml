@@ -14,7 +14,7 @@
 
             <!-- Label -->
             <TextView
-                android:text="@string/product_order"
+                android:text="@string/product_label"
                 style="@style/CategoryStyle" />
 
         <!-- Input fields -->
@@ -44,6 +44,13 @@
                 android:id="@+id/edit_product_price"
                 android:hint="@string/hint_product_price"
                 android:inputType="number"
+                style="@style/EditorFieldStyle" />
+
+            <!-- email field -->
+            <EditText
+                android:id="@+id/edit_product_email"
+                android:hint="@string/hint_product_email"
+                android:inputType="text"
                 style="@style/EditorFieldStyle" />
 
 

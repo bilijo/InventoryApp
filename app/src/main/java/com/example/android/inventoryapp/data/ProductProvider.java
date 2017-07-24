@@ -14,6 +14,8 @@ import android.widget.Toast;
 
 import com.example.android.inventoryapp.data.ProductContract.ProductEntry;
 
+import static android.R.attr.name;
+
 /**
  * Created by dam on 20.07.2017.
  */
@@ -136,7 +138,6 @@ public class ProductProvider  extends ContentProvider {
     private Uri insertProduct(Uri uri, ContentValues values) {
         // Check that the name is not null
         String name = values.getAsString(ProductEntry.COLUMN_PRODUCT_NAME);
-        Log.d(LOG_TAG, "insertProduct: "+name);
         if (name == null) {
             throw new IllegalArgumentException("Product requires a name");
 
@@ -155,7 +156,13 @@ public class ProductProvider  extends ContentProvider {
             throw new IllegalArgumentException("Product requires valid price");
         }
 
-  
+        // Check that the email is not null
+        String email = values.getAsString(ProductEntry.COLUMN_PRODUCT_SUPPLIER_EMAIL);
+        if (email == null) {
+            throw new IllegalArgumentException("Product requires a supplier email");
+
+        }
+
 
         // Get writeable database
         SQLiteDatabase database = mDbHelper.getWritableDatabase();
@@ -229,6 +236,16 @@ public class ProductProvider  extends ContentProvider {
                 throw new IllegalArgumentException("Product requires valid Price");
             }
         }
+
+        // If the {@link ProductEntry#COLUMN_PRODUCT_SUPPLIER_EMAIL} key is present,
+        // check that the name value is not null.
+        if (values.containsKey(ProductEntry.COLUMN_PRODUCT_SUPPLIER_EMAIL)) {
+            String email = values.getAsString(ProductEntry.COLUMN_PRODUCT_SUPPLIER_EMAIL);
+            if (email == null) {
+                throw new IllegalArgumentException("Product requires a email");
+            }
+        }
+
 
         // If there are no values to update, then don't try to update the database
         if (values.size() == 0) {
