@@ -20,6 +20,8 @@ public class ProductDbHelper extends SQLiteOpenHelper {
      * Database version. If you change the database schema, you must increment the database version.
      */
     private static final int DATABASE_VERSION = 1;
+    private static final String SQL_DELETE_ENTRIES =
+            "DROP TABLE IF EXISTS " + ProductEntry.TABLE_NAME;
 
     /**
      * Constructs a new instance of {@link ProductDbHelper}.
@@ -41,15 +43,13 @@ public class ProductDbHelper extends SQLiteOpenHelper {
                 + ProductEntry.COLUMN_PRODUCT_NAME + " TEXT NOT NULL, "
                 + ProductEntry.COLUMN_PRODUCT_QTY + " INTEGER NOT NULL DEFAULT 0,  "
                 + ProductEntry.COLUMN_PRODUCT_PRICE + " INTEGER NOT NULL DEFAULT 0, "
-                + ProductEntry.COLUMN_PRODUCT_SUPPLIER_EMAIL + " TEXT NOT NULL)";
-               // + ProductEntry.COLUMN_PRODUCT_IMAGE + " TEXT NOT NULL)";
+                + ProductEntry.COLUMN_PRODUCT_SUPPLIER_EMAIL + " TEXT NOT NULL,"
+                + ProductEntry.COLUMN_PRODUCT_IMAGE + " TEXT NOT NULL)";
 
         // Execute the SQL statement
         db.execSQL(SQL_CREATE_PRODUCTS_TABLE);
     }
 
-    private static final String SQL_DELETE_ENTRIES =
-            "DROP TABLE IF EXISTS " + ProductEntry.TABLE_NAME;
     /**
      * This is called when the database needs to be upgraded.
      */

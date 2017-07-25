@@ -22,7 +22,7 @@
                 style="@style/CategoryStyle" />
 
             <ImageView
-                android:id="@+id/image_view"
+                android:id="@+id/product_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
@@ -75,6 +75,14 @@
                 android:hint="@string/hint_product_email"
                 android:inputType="text"
                 style="@style/EditorFieldStyle" />
+
+            <!-- imagefield -->
+            <EditText
+                android:id="@+id/edit_product_image"
+                android:hint="@string/hint_product_image"
+                android:inputType="text"
+                style="@style/EditorFieldStyle"
+                android:visibility="invisible"/>
 
 
 

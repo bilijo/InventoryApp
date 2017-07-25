@@ -163,6 +163,13 @@ public class ProductProvider  extends ContentProvider {
 
         }
 
+        // Check that the image is not null
+        String image = values.getAsString(ProductEntry.COLUMN_PRODUCT_IMAGE);
+        if (image == null) {
+            throw new IllegalArgumentException("Product requires an image");
+
+        }
+
 
         // Get writeable database
         SQLiteDatabase database = mDbHelper.getWritableDatabase();
@@ -238,15 +245,22 @@ public class ProductProvider  extends ContentProvider {
         }
 
         // If the {@link ProductEntry#COLUMN_PRODUCT_SUPPLIER_EMAIL} key is present,
-        // check that the name value is not null.
+        // check that the email value is not null.
         if (values.containsKey(ProductEntry.COLUMN_PRODUCT_SUPPLIER_EMAIL)) {
             String email = values.getAsString(ProductEntry.COLUMN_PRODUCT_SUPPLIER_EMAIL);
-            Log.d(LOG_TAG, "email: " + email);
             if (email == null) {
                 throw new IllegalArgumentException("Product requires a email");
             }
         }
 
+        // If the {@link ProductEntry#COLUMN_PRODUCT_IMAGE} key is present,
+        // check that the image value is not null.
+        if (values.containsKey(ProductEntry.COLUMN_PRODUCT_IMAGE)) {
+            String image = values.getAsString(ProductEntry.COLUMN_PRODUCT_IMAGE);
+            if (image == null) {
+                throw new IllegalArgumentException("Product requires a image");
+            }
+        }
 
         // If there are no values to update, then don't try to update the database
         if (values.size() == 0) {
@@ -298,7 +312,6 @@ public class ProductProvider  extends ContentProvider {
         if (rowsDeleted != 0) {
             getContext().getContentResolver().notifyChange(uri, null);
         }
-
         // Return the number of rows deleted
         return rowsDeleted;
     }

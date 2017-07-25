@@ -29,14 +29,17 @@ public class ProductContract {
 
     // To prevent someone from accidentally instantiating the contract class,
     // give it an empty constructor.
-    private ProductContract() {}
+    private ProductContract() {
+    }
 
     /**
      * Inner class that defines constant values for the products database table.
      */
     public static final class ProductEntry implements BaseColumns {
 
-        /** The content URI to access the productdata in the provider */
+        /**
+         * The content URI to access the productdata in the provider
+         */
         public static final Uri CONTENT_URI = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_PRODUCTS);
 
         /**
@@ -52,52 +55,53 @@ public class ProductContract {
                 ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_PRODUCTS;
 
 
-
-        /** Name of database table for products */
+        /**
+         * Name of database table for products
+         */
         public final static String TABLE_NAME = "products";
 
         /**
          * Unique ID number for the product (only for use in the database table).
-         *
+         * <p>
          * Type: INTEGER
          */
         public final static String _ID = BaseColumns._ID;
 
         /**
          * Name of the product.
-         *
+         * <p>
          * Type: TEXT
          */
-        public final static String COLUMN_PRODUCT_NAME ="Name";
+        public final static String COLUMN_PRODUCT_NAME = "Name";
 
         /**
          * Quantity of the product.
-         *
+         * <p>
          * Type: INTEGER
          */
-        public final static String COLUMN_PRODUCT_QTY= "Quantity";
+        public final static String COLUMN_PRODUCT_QTY = "Quantity";
 
         /**
          * Price of the product.
-         *
+         * <p>
          * Type: INTEGER
          */
         public final static String COLUMN_PRODUCT_PRICE = "Price";
 
         /**
          * Supplier's contact email.
-         *
+         * <p>
          * Type: STRING
          */
-      public final static String COLUMN_PRODUCT_SUPPLIER_EMAIL = "email";
+        public final static String COLUMN_PRODUCT_SUPPLIER_EMAIL = "email";
 
 
         /**
          * Image of the product (link Uri).
-         *
+         * <p>
          * Type: STRING
          */
-      public final static String COLUMN_PRODUCT_IMAGE = "Image";
+        public final static String COLUMN_PRODUCT_IMAGE = "Image";
 
 
     }

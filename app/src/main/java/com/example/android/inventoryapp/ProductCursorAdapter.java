@@ -15,7 +15,6 @@
  */
 package com.example.android.inventoryapp;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.text.TextUtils;
@@ -24,11 +23,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CursorAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.android.inventoryapp.R;
 import com.example.android.inventoryapp.data.ProductContract.ProductEntry;
 
 /**
@@ -79,22 +76,22 @@ public class ProductCursorAdapter extends CursorAdapter {
         TextView nameTextView = (TextView) view.findViewById(R.id.text_product_name);
         final TextView qtyTextView = (TextView) view.findViewById(R.id.text_product_quantity);
         TextView priceTextView = (TextView) view.findViewById(R.id.text_product_price);
-      //  TextView emailTextView = (TextView) view.findViewById(R.id.text_product_email);
-       // TextView imageTextView = (TextView) view.findViewById(R.id.edit_product_image);
+        //  TextView emailTextView = (TextView) view.findViewById(R.id.text_product_email);
+        // TextView imageTextView = (TextView) view.findViewById(R.id.edit_product_image);
 
         // Find the columns of product attributes that we're interested in
         int nameColumnIndex = cursor.getColumnIndex(ProductEntry.COLUMN_PRODUCT_NAME);
         int qtyColumnIndex = cursor.getColumnIndex(ProductEntry.COLUMN_PRODUCT_QTY);
         int priceColumnIndex = cursor.getColumnIndex(ProductEntry.COLUMN_PRODUCT_PRICE);
-      //  int emailColumnIndex = cursor.getColumnIndex(ProductEntry.COLUMN_PRODUCT_SUPPLIER_EMAIL);
+        //  int emailColumnIndex = cursor.getColumnIndex(ProductEntry.COLUMN_PRODUCT_SUPPLIER_EMAIL);
         //int imageColumnIndex = cursor.getColumnIndex(ProductEntry.COLUMN_PRODUCT_IMAGE);
 
         // Read the product attributes from the Cursor for the current product
         String productName = cursor.getString(nameColumnIndex);
         final String productQty = cursor.getString(qtyColumnIndex);
         String productPrice = cursor.getString(priceColumnIndex);
-       // String productEmail= cursor.getString(emailColumnIndex);
-       // String productImage = cursor.getString(imageColumnIndex);
+        // String productEmail= cursor.getString(emailColumnIndex);
+        // String productImage = cursor.getString(imageColumnIndex);
 
         // If the product price is empty string or null, then use some default text
         // that says "Unknown price", so the TextView isn't blank.
@@ -107,23 +104,23 @@ public class ProductCursorAdapter extends CursorAdapter {
         nameTextView.setText(productName);
         priceTextView.setText(productPrice);
         qtyTextView.setText(productQty);
-       // emailTextView.setText(productEmail);
+        // emailTextView.setText(productEmail);
         //imageTextView.setText(productImage);
 
 
         // Setup the sale product button click listener
         Button decreaseQty = (Button) view.findViewById(R.id.sale_button);
 
-        decreaseQty.setOnClickListener(new View.OnClickListener(){
+        decreaseQty.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int minus = Integer.parseInt(String.valueOf(qtyTextView.getText()));
-                if (minus > 0){
+                if (minus > 0) {
                     minus--;
                     String minusText = String.valueOf(minus);
                     qtyTextView.setText(minusText);
-                }else {
-                    Toast.makeText(context, R.string.sale_quantity_no_match,Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(context, R.string.sale_quantity_no_match, Toast.LENGTH_SHORT).show();
                 }
             }
         });
