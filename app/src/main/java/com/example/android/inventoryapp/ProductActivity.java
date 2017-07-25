@@ -17,6 +17,7 @@ import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -107,6 +108,20 @@ public class ProductActivity extends AppCompatActivity implements
         if (mCurrentProductUri == null) {
             // This is a new product, so change the app bar to say "Add a Product"
             setTitle(getString(R.string.product_activity_title_new_product));
+
+            // hide the "Delete" button.
+            Button BtDelete = (Button) findViewById(R.id.btn_delete_product);
+            BtDelete.setVisibility(View.INVISIBLE);
+
+            // hide the "increase" qty button.
+            Button BtPlus = (Button) findViewById(R.id.btn_qty_plus);
+            BtPlus.setVisibility(View.INVISIBLE);
+
+            // hide the "decrease" qty button.
+            Button BtMinus = (Button) findViewById(R.id.btn_qty_minus);
+            BtMinus.setVisibility(View.INVISIBLE);
+
+
 
         } else {
             // Otherwise this is an existing product, so change app bar to say "Edit Product"
@@ -211,6 +226,7 @@ public class ProductActivity extends AppCompatActivity implements
                     // show the image to the user
                     // imgPicture.setImageBitmap(image);
                     imgPicture.setImageURI(imageUri);
+
                     mImageEditText.setText(imagePath);
                     Log.d(LOG_TAG, "imageUri :" + imageUri);
 
@@ -262,8 +278,9 @@ public class ProductActivity extends AppCompatActivity implements
         String priceString = mPriceEditText.getText().toString().trim();
         String emailString = mEmailEditText.getText().toString().trim();
         String imageString = mImageEditText.getText().toString().trim();
+         imgPicture.setImageURI(Uri.parse(imageString));
 
-        // Check if all the fields in the editor are blank
+        // Check if name fields in the editor are blank
 
         while (TextUtils.isEmpty(nameString)) {
             Toast.makeText(this, getString(R.string.add_name_to_product),
@@ -326,6 +343,8 @@ public class ProductActivity extends AppCompatActivity implements
                 Toast.makeText(this, getString(R.string.editor_insert_product_successful),
                         Toast.LENGTH_SHORT).show();
             }
+
+
         } else {
             // Otherwise this is an EXISTING product, so update the product with content URI: mCurrentProductUri
             // and pass in the new ContentValues. Pass in null for the selection and selection args
