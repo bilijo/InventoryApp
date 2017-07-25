@@ -195,7 +195,9 @@ public class ProductActivity extends AppCompatActivity implements
             if (requestCode == IMAGE_GALLERY_REQUEST) {
                 // Address of the image on the SD Card.
                 Uri imageUri = data.getData();
-                String imagePath = imageUri.getPath();
+                //String imagePath = imageUri.getPath();
+                String imagePath = imageUri.toString();
+
                 // declare a stream to read the image data from the SD Card.
                 InputStream inputStream;
 
@@ -208,6 +210,7 @@ public class ProductActivity extends AppCompatActivity implements
 
                     // show the image to the user
                     // imgPicture.setImageBitmap(image);
+                    imgPicture.setImageURI(imageUri);
                     mImageEditText.setText(imagePath);
                     Log.d(LOG_TAG, "imageUri :" + imageUri);
 

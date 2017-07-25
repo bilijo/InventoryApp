@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="@dimen/main_margin">
+    android:layout_margin="@dimen/main_margin"
+    android:orientation="vertical">
 
 
     <!-- Overview Product -->
@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -18,73 +19,71 @@
 
             <!-- Label -->
             <TextView
-                android:text="@string/product_label"
-                style="@style/CategoryStyle" />
+                style="@style/CategoryStyle"
+                android:text="@string/product_label" />
 
             <ImageView
                 android:id="@+id/product_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
-                android:src="@drawable/number_one"/>
-<Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="choose image"
-            android:id="@+id/btnImageGallery"
-            android:layout_weight="1"
-            android:onClick="onImageGalleryClicked"
-            android:nestedScrollingEnabled="true" />
+                android:src="@drawable/number_one" />
 
+            <Button
+                android:id="@+id/btnImageGallery"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:nestedScrollingEnabled="true"
+                android:onClick="onImageGalleryClicked"
+                android:text="choose image" />
 
 
         </LinearLayout>
 
         <!-- Input fields -->
         <LinearLayout
-            android:layout_height="wrap_content"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:paddingLeft="4dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingLeft="4dp">
 
             <!-- Name field -->
             <EditText
                 android:id="@+id/edit_product_name"
+                style="@style/EditorFieldStyle"
                 android:hint="@string/hint_product_name"
-                android:inputType="textCapWords"
-                style="@style/EditorFieldStyle" />
+                android:inputType="textCapWords" />
 
             <!-- Quantity field -->
             <EditText
                 android:id="@+id/edit_product_qty"
+                style="@style/EditorFieldStyle"
                 android:hint="@string/hint_product_qty"
-                android:inputType="number"
-                style="@style/EditorFieldStyle" />
+                android:inputType="number" />
 
             <!-- Price field -->
             <EditText
                 android:id="@+id/edit_product_price"
+                style="@style/EditorFieldStyle"
                 android:hint="@string/hint_product_price"
-                android:inputType="number"
-                style="@style/EditorFieldStyle" />
+                android:inputType="number" />
 
             <!-- email field -->
             <EditText
                 android:id="@+id/edit_product_email"
+                style="@style/EditorFieldStyle"
                 android:hint="@string/hint_product_email"
-                android:inputType="text"
-                style="@style/EditorFieldStyle" />
+                android:inputType="text" />
 
             <!-- imagefield -->
             <EditText
                 android:id="@+id/edit_product_image"
+                style="@style/EditorFieldStyle"
                 android:hint="@string/hint_product_image"
                 android:inputType="text"
-                style="@style/EditorFieldStyle"
-                android:visibility="invisible"/>
-
-
+                android:visibility="visible" />
 
         </LinearLayout>
     </LinearLayout>
@@ -92,27 +91,27 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_marginBottom="@dimen/main_margin"
-        android:layout_marginTop="@dimen/main_margin">
+        android:layout_marginTop="@dimen/main_margin"
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/btn_qty_plus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Qty \n plus"/>
+            android:text="Qty \n plus" />
 
         <Button
             android:id="@+id/btn_qty_minus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Qty \n minus"/>
+            android:text="Qty \n minus" />
 
         <Button
             android:id="@+id/btn_save"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="save \n product"/>
+            android:text="save \n product" />
 
     </LinearLayout>
 
@@ -125,13 +124,13 @@
             android:id="@+id/btn_supplier"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/editor_order_to_supplier"/>
+            android:text="@string/editor_order_to_supplier" />
 
         <Button
             android:id="@+id/btn_delete_product"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Delele product"/>
+            android:text="Delele product" />
 
     </LinearLayout>
 
