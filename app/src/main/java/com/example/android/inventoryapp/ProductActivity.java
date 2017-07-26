@@ -9,15 +9,16 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.DocumentsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -26,6 +27,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.android.inventoryapp.data.ProductContract.ProductEntry;
+import com.example.android.inventoryapp.data.ProductDbHelper;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -122,7 +124,6 @@ public class ProductActivity extends AppCompatActivity implements
             BtMinus.setVisibility(View.INVISIBLE);
 
 
-
         } else {
             // Otherwise this is an existing product, so change app bar to say "Edit Product"
             setTitle(getString(R.string.product_activity_title_edit_product));
@@ -167,19 +168,52 @@ public class ProductActivity extends AppCompatActivity implements
             }
         });
 
-        // only for debugging
-        final String dataEmail = "product@supplier.com";
+
         // Setup the email order button click listener
         Button emailButton = (Button) findViewById(R.id.btn_supplier);
         emailButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendEmail(dataEmail);
-
+                sendEmail(getEmailFromDb());
             }
         });
     }
 
+    public String getEmailFromDb() {
+        Cursor cursor = null;
+        String currentEmail = null;
+        ProductDbHelper mDbHelper = new ProductDbHelper(this);
+        // get readable database to retrieve the email
+        SQLiteDatabase database = mDbHelper.getReadableDatabase();
+
+        String[] projection = {
+                ProductEntry._ID,
+                // ProductEntry.COLUMN_PRODUCT_NAME,
+                ProductEntry.COLUMN_PRODUCT_SUPPLIER_EMAIL
+        };
+        try {
+            // Perform a query on the product table
+            cursor = database.query(
+                    ProductEntry.TABLE_NAME,   // The table to query
+                    projection,            // The columns to return
+                    null,                  // The columns for the WHERE clause
+                    null,                  // The values for the WHERE clause
+                    null,                  // Don't group the rows
+                    null,                  // Don't filter by row groups
+                    null);                   // The sort order
+
+            // Iterate through all the returned rows in the cursor
+            while (cursor.moveToNext()) {
+                int emailColumnIndex = cursor.getColumnIndex(ProductEntry.COLUMN_PRODUCT_SUPPLIER_EMAIL);
+                currentEmail = cursor.getString(emailColumnIndex);
+            }
+
+        } finally {
+            cursor.close();
+        }
+
+        return currentEmail;
+    }
 
     /**
      * Image Picker
@@ -189,7 +223,10 @@ public class ProductActivity extends AppCompatActivity implements
      */
     public void onImageGalleryClicked(View v) {
         // invoke the image gallery using an implict intent.
-        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+      //  Intent photoPickerIntent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+        //Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+        Intent photoPickerIntent = new Intent(Intent.ACTION_CREATE_DOCUMENT)
+                .addCategory(Intent.CATEGORY_OPENABLE);
 
         // where do we want to find the data?
         File pictureDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
@@ -206,22 +243,24 @@ public class ProductActivity extends AppCompatActivity implements
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Uri imageUri = null;
+        final int takeFlags = data.getFlags()
+                & (Intent.FLAG_GRANT_READ_URI_PERMISSION
+                | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        // Check for the freshest data.
+        getContentResolver().takePersistableUriPermission(imageUri, takeFlags);
+
+
         if (resultCode == RESULT_OK) {
             if (requestCode == IMAGE_GALLERY_REQUEST) {
                 // Address of the image on the SD Card.
-                Uri imageUri = data.getData();
+                 imageUri = data.getData();
                 //String imagePath = imageUri.getPath();
                 String imagePath = imageUri.toString();
 
-                // declare a stream to read the image data from the SD Card.
-                InputStream inputStream;
-
                 // Getting an input stream, based on the URI of the image.
                 try {
-                    inputStream = getContentResolver().openInputStream(imageUri);
 
-                    // Get a bitmap from the stream.
-                    Bitmap image = BitmapFactory.decodeStream(inputStream);
 
                     // show the image to the user
                     // imgPicture.setImageBitmap(image);
@@ -230,7 +269,7 @@ public class ProductActivity extends AppCompatActivity implements
                     mImageEditText.setText(imagePath);
                     Log.d(LOG_TAG, "imageUri :" + imageUri);
 
-                } catch (FileNotFoundException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                     // show a message to the user indictating that the image is unavailable.
                     Toast.makeText(this, "Unable to open image", Toast.LENGTH_LONG).show();
@@ -270,7 +309,7 @@ public class ProductActivity extends AppCompatActivity implements
     /**
      * Get user input from editor and save product into database.
      */
-    private void saveProduct() {
+    public void saveProduct() {
         // Read from input fields
         // Use trim to eliminate leading or trailing white space
         String nameString = mNameEditText.getText().toString().trim();
@@ -278,7 +317,7 @@ public class ProductActivity extends AppCompatActivity implements
         String priceString = mPriceEditText.getText().toString().trim();
         String emailString = mEmailEditText.getText().toString().trim();
         String imageString = mImageEditText.getText().toString().trim();
-         imgPicture.setImageURI(Uri.parse(imageString));
+        imgPicture.setImageURI(Uri.parse(imageString));
 
         // Check if name fields in the editor are blank
 
@@ -331,7 +370,7 @@ public class ProductActivity extends AppCompatActivity implements
             // This is a NEW product, so insert a new product into the provider,
             // returning the content URI for the new product.
             Uri newUri = getContentResolver().insert(ProductEntry.CONTENT_URI, values);
-            Log.d(LOG_TAG, "saveProduct newUri: " + newUri);
+            imgPicture.setImageURI(Uri.parse(imageString));
 
             // Show a toast message depending on whether or not the insertion was successful.
             if (newUri == null) {
@@ -352,6 +391,7 @@ public class ProductActivity extends AppCompatActivity implements
             // we want to modify.
             int rowsAffected = getContentResolver().update(mCurrentProductUri, values, null, null);
             Log.d(LOG_TAG, "mCurrentProductUri: " + mCurrentProductUri);
+            imgPicture.setImageURI(Uri.parse(imageString));
 
             // Show a toast message depending on whether or not the update was successful.
             if (rowsAffected == 0) {
@@ -453,6 +493,9 @@ public class ProductActivity extends AppCompatActivity implements
             mPriceEditText.setText(String.valueOf(price));
             mEmailEditText.setText(String.valueOf(email));
             mImageEditText.setText(String.valueOf(image));
+
+            imgPicture.setImageURI(Uri.parse(image));
+            Log.d(LOG_TAG, "imgPicture: " + Uri.parse(image));
 
             // Setup the minus quantity button click listener
             Button minusQtyButton = (Button) findViewById(R.id.btn_qty_minus);

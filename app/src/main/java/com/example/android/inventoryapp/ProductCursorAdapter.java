@@ -15,8 +15,12 @@
  */
 package com.example.android.inventoryapp;
 
+import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +31,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.inventoryapp.data.ProductContract.ProductEntry;
+import com.example.android.inventoryapp.data.ProductDbHelper;
+
+import static android.R.attr.id;
+import static java.security.AccessController.getContext;
 
 /**
  * {@link ProductCursorAdapter} is an adapter for a list or grid view
@@ -34,6 +42,12 @@ import com.example.android.inventoryapp.data.ProductContract.ProductEntry;
  * how to create list items for each row of product data in the {@link Cursor}.
  */
 public class ProductCursorAdapter extends CursorAdapter {
+    /**
+     * Database helper object
+     */
+    private ProductDbHelper mDbHelper;
+
+
 
     /**
      * Constructs a new {@link ProductCursorAdapter}.
@@ -119,6 +133,24 @@ public class ProductCursorAdapter extends CursorAdapter {
                     minus--;
                     String minusText = String.valueOf(minus);
                     qtyTextView.setText(minusText);
+
+
+                    mDbHelper = new ProductDbHelper(context);
+                    // get writeable database to update the data
+                    SQLiteDatabase database = mDbHelper.getWritableDatabase();
+
+                    Uri currentProductUri = ContentUris.withAppendedId(ProductEntry.CONTENT_URI, id);
+                    ContentValues values = new ContentValues();
+                    values.put(ProductEntry.COLUMN_PRODUCT_QTY, minus);
+
+                    // new ProductActivity().saveProduct();
+
+                    // Perform the update on the database
+                   // int update = database.update(ProductEntry.COLUMN_PRODUCT_QTY, values);
+                    // Notify all listeners that the data has changed for the product content URI
+                    //int rowsAffected = context.getContentResolver().update(currentProductUri, values, null, null);
+
+
                 } else {
                     Toast.makeText(context, R.string.sale_quantity_no_match, Toast.LENGTH_SHORT).show();
                 }
