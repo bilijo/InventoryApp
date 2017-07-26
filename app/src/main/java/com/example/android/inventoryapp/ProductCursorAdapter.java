@@ -22,6 +22,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +34,12 @@ import android.widget.Toast;
 import com.example.android.inventoryapp.data.ProductContract.ProductEntry;
 import com.example.android.inventoryapp.data.ProductDbHelper;
 
+import static android.R.attr.data;
 import static android.R.attr.id;
+import static android.content.ContentUris.withAppendedId;
+import static com.example.android.inventoryapp.data.ProductContract.ProductEntry.COLUMN_PRODUCT_QTY;
+import static com.example.android.inventoryapp.data.ProductContract.ProductEntry.TABLE_NAME;
+import static com.example.android.inventoryapp.data.ProductContract.ProductEntry._ID;
 import static java.security.AccessController.getContext;
 
 /**
@@ -85,7 +91,7 @@ public class ProductCursorAdapter extends CursorAdapter {
      *                correct row.
      */
     @Override
-    public void bindView(View view, final Context context, Cursor cursor) {
+    public void bindView(View view, final Context context, final Cursor cursor) {
         // Find individual views that we want to modify in the list item layout
         TextView nameTextView = (TextView) view.findViewById(R.id.text_product_name);
         final TextView qtyTextView = (TextView) view.findViewById(R.id.text_product_quantity);
@@ -95,7 +101,7 @@ public class ProductCursorAdapter extends CursorAdapter {
 
         // Find the columns of product attributes that we're interested in
         int nameColumnIndex = cursor.getColumnIndex(ProductEntry.COLUMN_PRODUCT_NAME);
-        int qtyColumnIndex = cursor.getColumnIndex(ProductEntry.COLUMN_PRODUCT_QTY);
+        final int qtyColumnIndex = cursor.getColumnIndex(COLUMN_PRODUCT_QTY);
         int priceColumnIndex = cursor.getColumnIndex(ProductEntry.COLUMN_PRODUCT_PRICE);
         //  int emailColumnIndex = cursor.getColumnIndex(ProductEntry.COLUMN_PRODUCT_SUPPLIER_EMAIL);
         //int imageColumnIndex = cursor.getColumnIndex(ProductEntry.COLUMN_PRODUCT_IMAGE);
@@ -134,21 +140,29 @@ public class ProductCursorAdapter extends CursorAdapter {
                     String minusText = String.valueOf(minus);
                     qtyTextView.setText(minusText);
 
+                    int indx = cursor.getColumnIndex(ProductEntry._ID);
 
-                    mDbHelper = new ProductDbHelper(context);
-                    // get writeable database to update the data
-                    SQLiteDatabase database = mDbHelper.getWritableDatabase();
+                    ProductDbHelper mDbHelper = new ProductDbHelper(context);
 
-                    Uri currentProductUri = ContentUris.withAppendedId(ProductEntry.CONTENT_URI, id);
+                    // Get readable database to store the new quantity
+                    //SQLiteDatabase database = mDbHelper.getReadableDatabase();
+                    int qty = cursor.getInt(qtyColumnIndex);
+                    int idRow = cursor.getInt(indx);
+                    Uri currentProductUri = withAppendedId(ProductEntry.CONTENT_URI, idRow);
+
+                    Log.d("LOG_TAG", "rowId: " + idRow);
+
+                    // Get writeable database to store the new quantity
+                    //SQLiteDatabase database = mDbHelper.getWritableDatabase();
+
+
                     ContentValues values = new ContentValues();
-                    values.put(ProductEntry.COLUMN_PRODUCT_QTY, minus);
+                    values.put(COLUMN_PRODUCT_QTY, minus);
+                    Log.d("LOG_TAG", "values: " + values+" indx="+indx);
+                   Uri ContentUris = withAppendedId(ProductEntry.CONTENT_URI, 2);
 
-                    // new ProductActivity().saveProduct();
-
-                    // Perform the update on the database
-                   // int update = database.update(ProductEntry.COLUMN_PRODUCT_QTY, values);
-                    // Notify all listeners that the data has changed for the product content URI
-                    //int rowsAffected = context.getContentResolver().update(currentProductUri, values, null, null);
+                //  database.update(TABLE_NAME, values, "_id="+idRow, null);
+                context.getContentResolver().update(ContentUris, values, null, null);
 
 
                 } else {
@@ -156,7 +170,7 @@ public class ProductCursorAdapter extends CursorAdapter {
                 }
             }
         });
-
+       // cursor.close();
 
     }
 

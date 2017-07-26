@@ -87,8 +87,6 @@ public class MainActivity extends AppCompatActivity implements
                 // Set the URI on the data field of the intent
                 intent.setData(currentProductUri);
 
-                Log.d(LOG_TAG, "onItemClick: " + currentProductUri);
-
                 // Launch the {@link ProductActivity} to display the data for the current product.
                 startActivity(intent);
             }
