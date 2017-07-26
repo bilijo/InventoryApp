@@ -130,23 +130,23 @@ public class ProductCursorAdapter extends CursorAdapter {
 
         // Setup the sale product button click listener
         Button decreaseQty = (Button) view.findViewById(R.id.sale_button);
-
+        final int position = cursor.getPosition();
         decreaseQty.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int minus = Integer.parseInt(String.valueOf(qtyTextView.getText()));
-                if (minus > 0) {
-                    minus--;
-                    String minusText = String.valueOf(minus);
+                cursor.moveToPosition(position);
+
+                int minusQty = cursor.getInt(qtyColumnIndex);
+                if (minusQty > 0) {
+                    minusQty--;
+                    String minusText = String.valueOf(minusQty);
+                    // update textview
                     qtyTextView.setText(minusText);
 
                     int indx = cursor.getColumnIndex(ProductEntry._ID);
 
-                    ProductDbHelper mDbHelper = new ProductDbHelper(context);
+                    //ProductDbHelper mDbHelper = new ProductDbHelper(context);
 
-                    // Get readable database to store the new quantity
-                    //SQLiteDatabase database = mDbHelper.getReadableDatabase();
-                    int qty = cursor.getInt(qtyColumnIndex);
                     int idRow = cursor.getInt(indx);
                     Uri currentProductUri = withAppendedId(ProductEntry.CONTENT_URI, idRow);
 
@@ -157,12 +157,12 @@ public class ProductCursorAdapter extends CursorAdapter {
 
 
                     ContentValues values = new ContentValues();
-                    values.put(COLUMN_PRODUCT_QTY, minus);
+                    values.put(COLUMN_PRODUCT_QTY, minusQty);
                     Log.d("LOG_TAG", "values: " + values+" indx="+indx);
-                   Uri ContentUris = withAppendedId(ProductEntry.CONTENT_URI, 2);
+                  // Uri ContentUris = withAppendedId(ProductEntry.CONTENT_URI, 2);
 
                 //  database.update(TABLE_NAME, values, "_id="+idRow, null);
-                context.getContentResolver().update(ContentUris, values, null, null);
+                context.getContentResolver().update(currentProductUri, values, null, null);
 
 
                 } else {
