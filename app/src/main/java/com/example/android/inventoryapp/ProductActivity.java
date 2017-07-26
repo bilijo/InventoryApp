@@ -244,17 +244,22 @@ public class ProductActivity extends AppCompatActivity implements
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Uri imageUri = null;
-        final int takeFlags = data.getFlags()
-                & (Intent.FLAG_GRANT_READ_URI_PERMISSION
-                | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-        // Check for the freshest data.
-        getContentResolver().takePersistableUriPermission(imageUri, takeFlags);
+
 
 
         if (resultCode == RESULT_OK) {
             if (requestCode == IMAGE_GALLERY_REQUEST) {
                 // Address of the image on the SD Card.
                  imageUri = data.getData();
+
+
+                final int takeFlags = data.getFlags()
+                        & (Intent.FLAG_GRANT_READ_URI_PERMISSION
+                        | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                // Check for the freshest data.
+                getContentResolver().takePersistableUriPermission(imageUri, takeFlags);
+
+
                 //String imagePath = imageUri.getPath();
                 String imagePath = imageUri.toString();
 
